@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,15 +13,16 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener{
-	public static int width = 500;
-	public static int height = 500;
+	public static int width = 800;//25 tiles
+	public static int height = 512;  
 	
 	
 	public Frame() {
 		JFrame f = new JFrame("Game");
 		f.setSize(width, height);
 		f.setBackground(Color.white);
-		f.setResizable(true);
+		f.setResizable(false);
+		f.add(this);
 		f.addKeyListener(this);
 		
 		
@@ -36,6 +38,23 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		Frame frame = new Frame();
 		System.out.println("hello world");
 	}
+	
+	
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.black);//tile size is 32x32
+		int size = 32;
+		
+		for (int j = 0; j < height/size; j++) {
+
+			for (int i = 0; i < width/size; i++) {
+				g.setColor(Color.black);
+				if (i % 2 == 0) {g.setColor(Color.blue);}
+				g.fillRect(size*i, size*j, size, size);
+			}
+		}
+		
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -46,7 +65,25 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		switch (e.getKeyCode()) {
 		
+		case (87): //w
+			System.out.println("up");
+			break;
+		case (65): //a
+			System.out.println("left");
+			break;
+		case (83): //d
+			System.out.println("down");
+			break;
+		case (68): //s
+			System.out.println("right");
+			break;
+		case (16): //shift
+			System.out.println("crouch");
+		
+		
+		}
 	}
 
 	@Override
