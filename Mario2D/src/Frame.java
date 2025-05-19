@@ -35,25 +35,19 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Frame frame = new Frame();
+//		Frame frame = new Frame();
+		LevelLoader a = new LevelLoader();
+		
+		a.load("src/levels/testing.json");
+		
 		System.out.println("hello world");
 	}
 	
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.black);//tile size is 32x32
-		int size = 32;
 		
-		for (int j = 0; j < height/size; j++) {
 
-			for (int i = 0; i < width/size; i++) {
-				g.setColor(Color.black);
-				if (i % 2 == 0) {g.setColor(Color.blue);}
-				g.fillRect(size*i, size*j, size, size);
-			}
-		}
-		
 	}
 
 	@Override
