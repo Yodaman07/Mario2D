@@ -3,6 +3,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.net.URL;
+import java.awt.Toolkit;
 
 public class Mario {
 	
@@ -19,6 +21,12 @@ public class Mario {
 		this.size = size;
 		this.stepSize = stepSize;
 		this.jump = jump;
+		
+		forward = Toolkit.getDefaultToolkit().getImage("H:\\git\\Mario2D\\Mario2D\\src\\pixilart-drawing (2).png");
+		
+		tx = AffineTransform.getTranslateInstance(0,0);
+		
+		init(x,y);
 	}
 	
 	public void paint(Graphics g) {
