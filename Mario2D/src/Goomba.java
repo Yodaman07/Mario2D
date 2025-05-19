@@ -12,6 +12,7 @@ public class Goomba extends Enemy{
 	public Goomba(int x, int y, double size, double v, int d) {
 		super(x, y, size, v);
 		walkDistance = d;
+		
 	}
 	
 	public void paint(Graphics g) {
