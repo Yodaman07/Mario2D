@@ -13,15 +13,18 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener{
-	public static int width = 500;
-	public static int height = 500;
+
 	private Mario mario;
+
+	public static int width = 800;//25 tiles
+	public static int height = 512;  
 	
 	public Frame() {
 		JFrame f = new JFrame("Game");
 		f.setSize(width, height);
 		f.setBackground(Color.white);
-		f.setResizable(true);
+		f.setResizable(false);
+		f.add(this);
 		f.addKeyListener(this);
 		
 		
@@ -40,9 +43,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Frame frame = new Frame();
+//		Frame frame = new Frame();
+		LevelLoader a = new LevelLoader();
+		
+		a.load("src/levels/testing.json");
+		
 		System.out.println("hello world");
 	}
+	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -53,7 +61,25 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		switch (e.getKeyCode()) {
 		
+		case (87): //w
+			System.out.println("up");
+			break;
+		case (65): //a
+			System.out.println("left");
+			break;
+		case (83): //d
+			System.out.println("down");
+			break;
+		case (68): //s
+			System.out.println("right");
+			break;
+		case (16): //shift
+			System.out.println("crouch");
+		
+		
+		}
 	}
 
 	@Override
