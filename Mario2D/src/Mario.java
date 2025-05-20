@@ -16,17 +16,22 @@ public class Mario {
 	private Image forward, backward, crouch, jumping;
 	private AffineTransform tx;
 	
+	private double scaleWidth = 2.0;		//change to scale image
+	private double scaleHeight = 2.0; 		//change to scale image
+	private int width, height;				//collision detection (hit box)
+	
 	public Mario(int x, int y, double size, double stepSize, double jump) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
+		this.width = (int) (24*scaleWidth);
+		this.height = (int) (32*scaleHeight);
+
 		this.stepSize = stepSize;
 		this.jump = jump;
 		
-		forward = getImage("/Mario2D/Mario2D/src/imgs/Mario.png");
+		forward = getImage("/imgs/Mario.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
-		
 		init(x,y);
 	}
 	
@@ -34,7 +39,6 @@ public class Mario {
 		Graphics2D g2 = (Graphics2D)g;
 		
 		init(x, y);
-		
 		g2.drawImage(forward, tx, null);
 		
 	}
@@ -44,7 +48,7 @@ public class Mario {
 		try {
 			URL imageURL = Mario.class.getResource(path);
 			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return tempImage;
@@ -52,7 +56,7 @@ public class Mario {
 	
 	private void init(int a, int b) {
 		tx.setToTranslation(a, b);
-		tx.scale(size, size);
+		tx.scale(scaleWidth, scaleHeight);
 	}
 	
 	public void keyPressed(KeyEvent e) {

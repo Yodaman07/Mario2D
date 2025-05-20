@@ -14,7 +14,7 @@ public class Goomba extends Enemy{
 	public Goomba(int x, int y, double size, double v, int d) {
 		super(x, y, size, v);
 		walkDistance = d;
-		forward = getImage("/Mario2D/Mario2D/src/imgs/Goomba.png");
+		forward = getImage("/imgs/Goomba.png");
 		
 	}
 	
