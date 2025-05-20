@@ -16,6 +16,8 @@ public class Goomba extends Enemy{
 		walkDistance = d;
 		forward = getImage("/imgs/Goomba.png");
 		
+		tx = AffineTransform.getTranslateInstance(0, 0);
+		init(x, y); 				//initialize the location of the image
 	}
 	
 	public void paint(Graphics g) {
