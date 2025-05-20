@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 import org.json.JSONObject;
@@ -14,13 +15,12 @@ public class LevelLoader{
 	public Level load(String filePath) {	
 		Gson gson = new Gson();
 		try {
-			File f = new File(filePath);
-			Scanner s = new Scanner(f);
-			String res = "";
-			while (s.hasNext()) {res+=s.next();}
 			
-			Level result = gson.fromJson(res, Level.class);
-//			System.out.println(result);
+			File f = new File(filePath);
+			FileReader fr = new FileReader(f);
+			
+			Level result = gson.fromJson(fr, Level.class);
+			System.out.println(result);
 			return result;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
