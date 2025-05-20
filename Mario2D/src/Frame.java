@@ -29,8 +29,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		f.addKeyListener(this);
 		
 		
-//		goomba = new Goomba(10, 10, 32, 32, 2);
-		mario = new Mario(width/2, height/2, 32, 32, 1);
+		goomba = new Goomba(100, 100, 2, 100);
+		mario = new Mario(width/2, height/2, 32, 1);
 		
 		
 		Timer t = new Timer(16, this);
@@ -41,11 +41,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 		f.revalidate();
 		f.setVisible(true);
-		
-
-
-		
-		
 		
 	}
 	
@@ -78,7 +73,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 				g.fillRect(size*i, size*j, size, size);
 			}
 		}
+		
 		mario.paint(g);
+		goomba.paint(g);
+		
+		if(Math.abs(goomba.getWalked()) >= goomba.getWalkDistance()) {
+			goomba.setVelocity(goomba.getVelocity()*-1);
+			goomba.setWalked(0);
+		}
 	}
 
 	
@@ -121,8 +123,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		repaint();
 	}
 	
 }

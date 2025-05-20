@@ -20,7 +20,7 @@ public class Mario {
 	private double scaleHeight = 2.0; 		//change to scale image
 	private int width, height;				//collision detection (hit box)
 	
-	public Mario(int x, int y, double size, double stepSize, double jump) {
+	public Mario(int x, int y, double stepSize, double jump) {
 		this.x = x;
 		this.y = y;
 		this.width = (int) (24*scaleWidth);

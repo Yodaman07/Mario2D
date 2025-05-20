@@ -2,13 +2,11 @@ import java.awt.event.KeyEvent;
 
 public class Enemy {
 	protected int x, y;
-	protected double size;
 	protected double velocity;
 	
-	public Enemy(int x, int y, double size, double v) {
+	public Enemy(int x, int y, double v) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
 		this.velocity = v;
 	}
 	
@@ -30,14 +28,6 @@ public class Enemy {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public double getSize() {
-		return size;
-	}
-
-	public void setSize(double size) {
-		this.size = size;
 	}
 
 	public double getVelocity() {
