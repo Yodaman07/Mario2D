@@ -1,9 +1,10 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 
-public class Block {
+public class Brick {
 	
 	private boolean breakable;
 	int x, y;
@@ -11,11 +12,12 @@ public class Block {
 	private Image image;
 	private AffineTransform tx;
 	
-	public Block(boolean b, int x, int y, double size) {
+	public Brick(boolean b, int x, int y, double size, String img) {
 		breakable = b;
 		this.x = x;
 		this.y = y;
 		this.size = size;
+		image = Toolkit.getDefaultToolkit().getImage(img);
 	}
 	
 	public void paint(Graphics g) {

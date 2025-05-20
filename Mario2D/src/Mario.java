@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.awt.Toolkit;
 
+
 public class Mario {
 	
 	private int x, y;
@@ -22,7 +23,7 @@ public class Mario {
 		this.stepSize = stepSize;
 		this.jump = jump;
 		
-		forward = Toolkit.getDefaultToolkit().getImage("H:\\git\\Mario2D\\Mario2D\\src\\pixilart-drawing (2).png");
+		forward = getImage("/Mario2D/Mario2D/src/imgs/Mario.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
 		
@@ -36,7 +37,17 @@ public class Mario {
 		
 		g2.drawImage(forward, tx, null);
 		
-		
+	}
+	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Mario.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
 	}
 	
 	private void init(int a, int b) {

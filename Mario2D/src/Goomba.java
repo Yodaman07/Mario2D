@@ -1,7 +1,9 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
+import java.net.URL;
 
 public class Goomba extends Enemy{
 	
@@ -12,6 +14,7 @@ public class Goomba extends Enemy{
 	public Goomba(int x, int y, double size, double v, int d) {
 		super(x, y, size, v);
 		walkDistance = d;
+		forward = getImage("/Mario2D/Mario2D/src/imgs/Goomba.png");
 		
 	}
 	
@@ -22,25 +25,47 @@ public class Goomba extends Enemy{
 		
 		g2.drawImage(forward, tx, null);
 		
-		int traveled = 0;
-		x += velocity;
-		traveled += velocity;
+		int walked = 0;
+
 		
-		if(Math.abs(traveled) == walkDistance) {
+		x += velocity;
+		walked += velocity;
+		if(walked >= walkDistance) {
 			velocity *= -1;
-			traveled = 0;
-			if(velocity < 0) {
-				g2.drawImage(backward, tx, null);
-			}else {
-				g2.drawImage(forward, tx, null);
-			}
+			walked = 0;
 		}
+		
+		
+	
+	}
+	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Goomba.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
 	}
 	
 	private void init(int a, int b) {
 		tx.setToTranslation(a, b);
 		tx.scale(size, size);
 	}
+
+	public int getWalkDistance() {
+		return walkDistance;
+	}
+
+	public void setWalkDistance(int walkDistance) {
+		this.walkDistance = walkDistance;
+	}
+	
+	
+	
+	
 	
 	
 	
