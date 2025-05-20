@@ -6,5 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/Users/ayaan/Documents/AP CSA/Mario2D/json-20250517.jar"/>
+	<classpathentry kind="lib" path="/Users/ayaan/Documents/AP CSA/Mario2D/gson-2.13.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

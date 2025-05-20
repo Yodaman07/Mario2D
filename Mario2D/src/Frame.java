@@ -13,11 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener{
+
+
+	private Mario mario;
 	public static int width = 800;//25 tiles
 	public static int height = 512;  
   
-	
-	
 	public Frame() {
 		JFrame f = new JFrame("Game");
 		f.setSize(width, height);
@@ -36,7 +37,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Frame frame = new Frame();
+//		Frame frame = new Frame();
+		LevelLoader a = new LevelLoader();
+		
+		a.load("src/levels/testing.json");
+		
+		System.out.println("hello world");
 	}
 	
 	
@@ -57,6 +63,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		}
 		
 	}
+
+	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
