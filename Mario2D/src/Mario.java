@@ -17,8 +17,8 @@ public class Mario {
 	private Image forward, backward, crouch, jumping;
 	private AffineTransform tx;
 	
-	private double scaleWidth = 2.0;		//change to scale image
-	private double scaleHeight = 2.0; 		//change to scale image
+	private double scaleWidth = 1;		//change to scale image
+	private double scaleHeight = 1; 		//change to scale image
 	private int width, height;				//collision detection (hit box)
 	
 	public Mario(int x, int y, double stepSize, double jump) {

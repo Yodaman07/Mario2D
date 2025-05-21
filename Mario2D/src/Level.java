@@ -17,7 +17,7 @@ public class Level {
 	//post decode
 	private transient ArrayList<StaticTexture> blocks = new ArrayList<StaticTexture>();
 	private transient ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private transient Mario mario;
+	public transient Mario mario;
 	
 	//transient means it won't be serialized
 	
@@ -30,8 +30,8 @@ public class Level {
 		Graphics2D g2 = (Graphics2D) g;
 	
 		for  (StaticTexture b: blocks) {b.paint(g2);}
-		
 		for  (Enemy e: enemies) {e.paint(g2);}
+		mario.paint(g2);
 		
 	}
 	
@@ -56,21 +56,20 @@ public class Level {
 		for (HashMap<String, Integer> entity : entities) {
 			int x = entity.get("x");
 			int y = entity.get("y");
-			if (entity.get("type") == 11) { //type 11 is enemy
-				
-				switch (entity.get("id")){
-					case 1: //Goomba
-						enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), 2, 50));
-						break;
-					case 2:
-						break;
-					case 3:
-						break;
-				}
-				
-			}else if (entity.get("type") == 10) { //type 10 is mario
-				
-				
+			
+			switch (entity.get("id")){
+				case 0: //Mario
+					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), 2, 100);
+					break;
+				case 1: //Goomba
+					int velocity = entity.get("velocity");
+					int dist = entity.get("walk_distance");
+					enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), velocity, dist));
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
 			}
 	
 		}
