@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,11 +12,19 @@ public class Goomba extends Enemy{
 	private Image forward, backward;
 	private AffineTransform tx;
 	
-	public Goomba(int x, int y, double size, double v, int d) {
-		super(x, y, size, v);
+	private double scaleWidth = 2.0;		//change to scale image
+	private double scaleHeight = 2.0; 		//change to scale image
+	private int width, height;
+	private int walked = 0;
+	
+	public Goomba(int x, int y, double v, int d) {
+		super(x, y, v);
+		this.width = (int) (32*scaleWidth);
+		this.height = (int) (32*scaleHeight);
 		walkDistance = d;
-		forward = getImage("/imgs/Goomba.png");
 		
+		forward = getImage("/imgs/Goomba.png");
+
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
 	}
@@ -27,20 +36,30 @@ public class Goomba extends Enemy{
 		
 		g2.drawImage(forward, tx, null);
 		
-		int walked = 0;
-
-		
 		x += velocity;
 		walked += velocity;
-		if(walked >= walkDistance) {
-			velocity *= -1;
-			walked = 0;
-		}
 		
-		
-	
+		g2.setColor(Color.red);
+		g2.drawRect(x, y, width, height);
+
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
@@ -54,7 +73,15 @@ public class Goomba extends Enemy{
 	
 	private void init(int a, int b) {
 		tx.setToTranslation(a, b);
-		tx.scale(size, size);
+		tx.scale(scaleWidth, scaleHeight);
+	}
+
+	public int getWalked() {
+		return walked;
+	}
+
+	public void setWalked(int walked) {
+		this.walked = walked;
 	}
 
 	public int getWalkDistance() {
@@ -64,6 +91,8 @@ public class Goomba extends Enemy{
 	public void setWalkDistance(int walkDistance) {
 		this.walkDistance = walkDistance;
 	}
+	
+	
 	
 	
 	

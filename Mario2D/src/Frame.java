@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -20,8 +21,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 	public static boolean debugging = true;
 	
-	private Mario mario;
-	private Goomba goomba;	
+	private Goomba goomba = new Goomba(100, height/2, 2, 100);
+	private Mario mario = new Mario(500, height/2, 2, 100);
+	private StaticTexture brick;
+	
+
 	private Level level = new LevelLoader().load("src/levels/testing.json");
 	
 
@@ -32,22 +36,24 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		super.paintComponent(g);
 		
 //		g.setColor(Color.black);//tile size is 32x32
-		int size = 32;
-		
-//		
-//		for (int j = 0; j < height/size; j++) {
-//
-//			for (int i = 0; i < width/size; i++) {
-//				g.setColor(Color.black);
-//				if (i % 2 == 0) {g.setColor(Color.blue);}
-//				g.fillRect(size*i, size*j, size, size);
-//			}
-//		}
-		
-//		st.paint(g);
-//		goomba.paint(g);
 		level.paint(g);
-
+		
+		mario.paint(g);
+		goomba.paint(g);
+		
+		if(Math.abs(goomba.getWalked()) >= goomba.getWalkDistance()) {
+			goomba.setVelocity(goomba.getVelocity()*-1);
+			goomba.setWalked(0);
+		}
+		
+		if(mario.getX() + mario.getWidth() >= goomba.getX() && mario.getX() <= goomba.getX()) {
+			mario.setX(0);
+		}
+		
+		//check right side collision
+		if(mario.getX() <= goomba.getX() + goomba.getWidth() && mario.getX() + mario.getWidth() >= goomba.getX() + goomba.getWidth()) {
+			mario.setX(0);
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -84,19 +90,23 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		System.out.println(e.getKeyCode());
 		switch (e.getKeyCode()) {
 		
 		case (87): //w
 			System.out.println("up");
+			mario.jump();
 			break;
 		case (65): //a
 			System.out.println("left");
+			mario.setX((int)(mario.getX() - mario.getStepSize()));
 			break;
-		case (83): //d
-			System.out.println("down");
-			break;
-		case (68): //s
+		case (68): //d
 			System.out.println("right");
+			mario.setX((int)(mario.getX() + mario.getStepSize()));
+			break;
+		case (83): //s
+			System.out.println("down");
 			break;
 		case (16): //shift
 			System.out.println("crouch");

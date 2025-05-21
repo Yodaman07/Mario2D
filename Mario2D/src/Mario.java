@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,7 +21,7 @@ public class Mario {
 	private double scaleHeight = 2.0; 		//change to scale image
 	private int width, height;				//collision detection (hit box)
 	
-	public Mario(int x, int y, double size, double stepSize, double jump) {
+	public Mario(int x, int y, double stepSize, double jump) {
 		this.x = x;
 		this.y = y;
 		this.width = (int) (24*scaleWidth);
@@ -35,14 +36,49 @@ public class Mario {
 		init(x,y);
 	}
 	
+	public void jump() {
+		double acceleration = 9.8;
+		double velocity = jump;
+		int yInit = y;
+		
+		while(velocity > 0) {
+			y += velocity;
+			velocity -= acceleration;
+		}
+	//	while(y > yInit) {
+			//y -= velocity;
+		//	velocity += acceleration;
+		//}
+		
+	}
+	
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		
 		init(x, y);
 		g2.drawImage(forward, tx, null);
 		
+		g2.setColor(Color.red);
+		g2.drawRect(x, y, width, height);
+		
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
