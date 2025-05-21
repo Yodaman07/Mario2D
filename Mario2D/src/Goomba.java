@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -37,12 +38,27 @@ public class Goomba extends Enemy{
 		x += velocity;
 		walked += velocity;
 		
-		
-		
-		
-	
+		g2.setColor(Color.red);
+		g2.drawRect(x, y, width, height);
+
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {

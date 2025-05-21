@@ -29,8 +29,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		f.addKeyListener(this);
 		
 		
-		goomba = new Goomba(100, 100, 2, 100);
-		mario = new Mario(width/2, height/2, 32, 1);
+		goomba = new Goomba(100, height/2, 2, 100);
+		mario = new Mario(500, height/2, 2, 100);
 		
 		
 		Timer t = new Timer(16, this);
@@ -81,6 +81,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 			goomba.setVelocity(goomba.getVelocity()*-1);
 			goomba.setWalked(0);
 		}
+		
+		if(mario.getX() + mario.getWidth() >= goomba.getX() && mario.getX() <= goomba.getX()) {
+			mario.setX(0);
+		}
+		
+		//check right side collision
+		if(mario.getX() <= goomba.getX() + goomba.getWidth() && mario.getX() + mario.getWidth() >= goomba.getX() + goomba.getWidth()) {
+			mario.setX(0);
+		}
+		
 	}
 
 	
@@ -94,19 +104,23 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		System.out.println(e.getKeyCode());
 		switch (e.getKeyCode()) {
 		
 		case (87): //w
 			System.out.println("up");
+			mario.jump();
 			break;
 		case (65): //a
 			System.out.println("left");
+			mario.setX((int)(mario.getX() - mario.getStepSize()));
 			break;
-		case (83): //d
-			System.out.println("down");
-			break;
-		case (68): //s
+		case (68): //d
 			System.out.println("right");
+			mario.setX((int)(mario.getX() + mario.getStepSize()));
+			break;
+		case (83): //s
+			System.out.println("down");
 			break;
 		case (16): //shift
 			System.out.println("crouch");
