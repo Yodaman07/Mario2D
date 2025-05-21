@@ -1,6 +1,9 @@
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -15,55 +19,24 @@ import javax.swing.Timer;
 public class Frame extends JPanel implements ActionListener, KeyListener{
 
 
-	private Mario mario;
-	private Goomba goomba;
+	public static boolean debugging = true;
+	
+	private Goomba goomba = new Goomba(100, height/2, 2, 100);
+	private Mario mario = new Mario(500, height/2, 2, 100);
+	private StaticTexture brick;
+	
+	private Level level = new LevelLoader().load("src/levels/testing.json");
+	
+
 	public static int width = 800;//25 tiles
 	public static int height = 512;  
   
-	public Frame() {
-		JFrame f = new JFrame("Game");
-		f.setSize(new Dimension(width, height));
-		f.setBackground(Color.white);
-		f.add(this);
-		f.setResizable(true);
-		f.addKeyListener(this);
-		
-		
-		goomba = new Goomba(100, height/2, 2, 100);
-		mario = new Mario(500, height/2, 2, 100);
-		
-		
-		Timer t = new Timer(16, this);
-		t.start();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		f.repaint();
-
-		f.revalidate();
-		f.setVisible(true);
-		
-	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Frame frame = new Frame();
-//		LevelLoader a = new LevelLoader();
-//		
-//		a.load("src/levels/testing.json");
-//		
-//		System.out.println("hello world");
-	}
-	
-	
-	
-	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
 //		g.setColor(Color.black);//tile size is 32x32
 		int size = 32;
 		
-
 		
 		for (int j = 0; j < height/size; j++) {
 
@@ -73,6 +46,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 				g.fillRect(size*i, size*j, size, size);
 			}
 		}
+		
+//		st.paint(g);
+//		goomba.paint(g);
+		level.paint(g);
+//		brick.paint(g);
 		
 		mario.paint(g);
 		goomba.paint(g);
@@ -90,9 +68,34 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		if(mario.getX() <= goomba.getX() + goomba.getWidth() && mario.getX() + mario.getWidth() >= goomba.getX() + goomba.getWidth()) {
 			mario.setX(0);
 		}
-		
 	}
-
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Frame frame = new Frame();
+	}
+	
+	
+	public Frame() {
+		JFrame f = new JFrame("Game");
+		f.setSize(new Dimension(width, height));
+		f.setBackground(Color.white);
+		f.add(this);
+		f.setResizable(true);
+		f.addKeyListener(this);
+		
+		brick = new StaticTexture(Level.cTp(3, 32), Level.cTp(3, 32), "/imgs/Orange_Brick.png");
+//		goomba = new Goomba(10, 10, 32, 32, 2);
+//		mario = new Mario(width/2, height/2, 32, 32, 1);
+		
+	
+		
+		Timer t = new Timer(16, this);
+		t.start();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setVisible(true);
+				
+	}
 	
 
 	@Override
@@ -137,6 +140,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		repaint();
 	}
 	
