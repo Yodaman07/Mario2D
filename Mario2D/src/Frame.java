@@ -21,9 +21,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	public static boolean debugging = true;
 	
 	private Mario mario;
-	private Goomba goomba;
-	private StaticTexture brick;
-	
+	private Goomba goomba;	
 	private Level level = new LevelLoader().load("src/levels/testing.json");
 	
 
@@ -36,20 +34,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //		g.setColor(Color.black);//tile size is 32x32
 		int size = 32;
 		
-		
-		for (int j = 0; j < height/size; j++) {
-
-			for (int i = 0; i < width/size; i++) {
-				g.setColor(Color.black);
-				if (i % 2 == 0) {g.setColor(Color.blue);}
-				g.fillRect(size*i, size*j, size, size);
-			}
-		}
+//		
+//		for (int j = 0; j < height/size; j++) {
+//
+//			for (int i = 0; i < width/size; i++) {
+//				g.setColor(Color.black);
+//				if (i % 2 == 0) {g.setColor(Color.blue);}
+//				g.fillRect(size*i, size*j, size, size);
+//			}
+//		}
 		
 //		st.paint(g);
 //		goomba.paint(g);
 		level.paint(g);
-//		brick.paint(g);
+
 	}
 	
 	public static void main(String[] args) {
@@ -66,11 +64,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		f.setResizable(true);
 		f.addKeyListener(this);
 		
-		brick = new StaticTexture(Level.cTp(3, 32), Level.cTp(3, 32), "/imgs/Orange_Brick.png");
 //		goomba = new Goomba(10, 10, 32, 32, 2);
 //		mario = new Mario(width/2, height/2, 32, 32, 1);
-		
-	
 		
 		Timer t = new Timer(16, this);
 		t.start();

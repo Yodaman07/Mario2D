@@ -21,6 +21,7 @@ public class LevelLoader{
 			
 			Level result = gson.fromJson(fr, Level.class);
 			System.out.println(result);
+			result.mapBlocks();
 			return result;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

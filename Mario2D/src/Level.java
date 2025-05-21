@@ -10,7 +10,8 @@ public class Level {
 	private String name;
 	private int id;
 	private ArrayList<HashMap<String, Integer>> layout;
-	
+	private transient ArrayList<StaticTexture> blocks = new ArrayList<StaticTexture>();
+	//transient means it won't be serialized
 	
 	public Level() {}
 	//Load level with LevelLoader
@@ -18,28 +19,27 @@ public class Level {
 	
 	
 	public void paint(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;		
+		Graphics2D g2 = (Graphics2D) g;
+	
+		for  (StaticTexture b: blocks) {
+			b.paint(g2);
+		}
+		
 	}
 	
 	public void mapBlocks() {
-		ArrayList<StaticTexture> blocks;
+		
 		for (HashMap<String, Integer> block : layout) {
-			
 			switch (block.get("id")){
 				case 1: //Orange_Brick.png
-//					blocks.add(new StaticTexture("/imgs/Orange_Brick.png"));
+					blocks.add(new StaticTexture(Level.cTp(block.get("x"), 32), Level.cTp(block.get("y"), 32), "/imgs/Orange_Brick.png"));
 					break;
 				case 2:
 					break;
 				case 3:
 					break;
 			}
-			
-			
-			
-			
 		}
-		
 	}
 	
 	@Override
