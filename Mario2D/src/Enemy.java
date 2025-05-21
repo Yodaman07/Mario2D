@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class Enemy {
@@ -9,6 +10,9 @@ public class Enemy {
 		this.y = y;
 		this.velocity = v;
 	}
+	
+	public void paint(Graphics g) {}//DO NOT REMOVE - Overridden for each enemy
+	
 	
 	public void keyPressed(KeyEvent e) {
 		return;

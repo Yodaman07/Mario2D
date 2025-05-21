@@ -12,8 +12,8 @@ public class Goomba extends Enemy{
 	private Image forward, backward;
 	private AffineTransform tx;
 	
-	private double scaleWidth = 2.0;		//change to scale image
-	private double scaleHeight = 2.0; 		//change to scale image
+	private double scaleWidth = 1;		//change to scale image
+	private double scaleHeight = 1; 		//change to scale image
 	private int width, height;
 	private int walked = 0;
 	
@@ -29,18 +29,28 @@ public class Goomba extends Enemy{
 		init(x, y); 				//initialize the location of the image
 	}
 	
+	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
 		
 		init(x, y);
+		
+		if(Math.abs(this.getWalked()) >= this.getWalkDistance()) {
+			this.setVelocity(this.getVelocity()*-1);
+			this.setWalked(0);
+		}
 		
 		g2.drawImage(forward, tx, null);
 		
 		x += velocity;
 		walked += velocity;
 		
-		g2.setColor(Color.red);
-		g2.drawRect(x, y, width, height);
+		
+		if (Frame.debugging) {
+			g2.setColor(Color.red);
+			g2.drawRect(x, y, width, height);
+		}
 
 	}
 	

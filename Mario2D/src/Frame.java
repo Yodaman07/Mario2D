@@ -39,12 +39,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		level.paint(g);
 		
 		mario.paint(g);
-		goomba.paint(g);
-		
-		if(Math.abs(goomba.getWalked()) >= goomba.getWalkDistance()) {
-			goomba.setVelocity(goomba.getVelocity()*-1);
-			goomba.setWalked(0);
-		}
+//		goomba.paint(g);
 		
 		if(mario.getX() + mario.getWidth() >= goomba.getX() && mario.getX() <= goomba.getX()) {
 			mario.setX(0);

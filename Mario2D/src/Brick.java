@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 
-public class Brick {
+public class Brick{
 	
 	private boolean breakable;
 	int x, y;
