@@ -66,6 +66,8 @@ public class Mario{
 
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
+		x+=vx;
+		x+=vy;
 		
 		init(x, y);
 		g2.drawImage(forward, tx, null);

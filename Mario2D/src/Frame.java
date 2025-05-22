@@ -97,11 +97,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 				break;
 			case (65): //a
 				System.out.println("left");
-				m.setX((int)(m.getX() + 1));
+				m.setVX(-3);
 				break;
 			case (68): //d
 				System.out.println("right");
-				m.setX((int)(m.getX() + 1));
+				m.setVX(3);
 				break;
 			case (83): //s
 				System.out.println("down");
@@ -114,7 +114,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		Mario m = level.mario;
+
+		switch (e.getKeyCode()) {
+			case (65): //a
+				m.setVX(0);
+				break;
+			case (68): //d
+				m.setVX(0);
+				break;	
+		}
 	}
 
 	@Override
