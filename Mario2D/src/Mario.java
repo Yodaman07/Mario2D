@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.awt.Toolkit;
-
+import java.time.*;
 
 public class Mario {
 	
@@ -20,6 +20,12 @@ public class Mario {
 	private double scaleWidth = 1;		//change to scale image
 	private double scaleHeight = 1; 		//change to scale image
 	private int width, height;				//collision detection (hit box)
+	
+	private boolean isJumping = false;
+	private boolean isFalling = false;
+	
+	private double accel = 1.5;
+	private double dt = 0.5;
 	
 	public Mario(int x, int y, double stepSize, double jump) {
 		this.x = x;
@@ -37,19 +43,16 @@ public class Mario {
 	}
 	
 	public void jump() {
-		double acceleration = 9.8;
-		double velocity = jump;
-		int yInit = y;
-		
-		while(velocity > 0) {
-			y += velocity;
-			velocity -= acceleration;
+		if(isJumping || isFalling) {
+			return;
 		}
-	//	while(y > yInit) {
-			//y -= velocity;
-		//	velocity += acceleration;
-		//}
-		
+		isJumping = true;
+	}
+	
+	public void fall() {
+		isFalling = true;
+		isJumping = false;
+		jump = 0;
 	}
 	
 	public void paint(Graphics g) {
@@ -60,6 +63,23 @@ public class Mario {
 		
 		g2.setColor(Color.red);
 		g2.drawRect(x, y, width, height);
+		
+		if(isJumping) {
+			
+			jump -= accel * dt;
+			y = (int) (y - (dt * jump) - (0.5 * accel * dt * dt));
+			if(jump <= 0) {
+				fall();
+			}
+		}
+		
+		if(isFalling) {
+			jump += accel * dt;
+			y = (int) (y + (dt * jump) + (0.5 * accel * dt * dt));
+			if(y >= 256) {
+				isFalling = false;
+			}
+		}
 		
 	}
 	

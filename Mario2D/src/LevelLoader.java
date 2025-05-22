@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-import org.json.JSONObject;
 import com.google.gson.Gson;
 
 public class LevelLoader{
