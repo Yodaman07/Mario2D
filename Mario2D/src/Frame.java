@@ -21,8 +21,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 	public static boolean debugging = true;
 	
-//	private Goomba goomba = new Goomba(100, height/2, 2, 100);
-//	private Mario mario = new Mario(500, height/2, 2, 100);
+	private Goomba goomba = new Goomba(100, height/2, 2, 100);
+	private Mario mario = new Mario(500, height/2, 2, 100);
 	private StaticTexture brick;
 	
 
@@ -51,6 +51,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Frame frame = new Frame();
+//		Editor e = new Editor();
 	}
 	
 	
