@@ -8,6 +8,8 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class StaticTexture{
+	
+
 	private Image forward; 	
 	private AffineTransform tx;
 	
@@ -19,6 +21,8 @@ public class StaticTexture{
 	private boolean dangerous = false;
 
 	public StaticTexture(String path) {
+		super();
+		
 		forward 	= getImage(path); //load the image
 
 		width = (int) (32*scaleWidth); // All static textures are 32x32
@@ -42,7 +46,7 @@ public class StaticTexture{
 		
 		//do the specific task for THIS constructor
 		this.x = x;
-		this.y = y;	
+		this.y = y;
 	}
 	
 	//3nd constructor - allow for setting texture danger (does the player die when hitting?
@@ -94,5 +98,10 @@ public class StaticTexture{
 			e.printStackTrace();
 		}
 		return tempImage;
+	}
+	
+	@Override
+	public String toString() {
+		return "StaticTexture [x=" + x + ", y=" + y + "]";
 	}
 }

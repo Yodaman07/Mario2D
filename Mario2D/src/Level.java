@@ -59,7 +59,7 @@ public class Level {
 			
 			switch (entity.get("id")){
 				case 0: //Mario
-					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), 2, 100);
+					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), 20);
 					break;
 				case 1: //Goomba
 					int velocity = entity.get("velocity");
@@ -76,6 +76,9 @@ public class Level {
 		
 	}
 	
+	public ArrayList<StaticTexture> getBlocks(){ //Blocks MUST be loaded beforehand
+		return blocks;
+	}
 	
 	
 	@Override
