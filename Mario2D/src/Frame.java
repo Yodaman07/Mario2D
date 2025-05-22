@@ -26,6 +26,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	private StaticTexture brick;
 	
 
+//	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 	private Level level = new LevelLoader().load("src/levels/testing.json");
 	
 
