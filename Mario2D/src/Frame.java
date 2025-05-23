@@ -19,7 +19,7 @@ import javax.swing.Timer;
 public class Frame extends JPanel implements ActionListener, KeyListener{
 
 
-	public static boolean debugging = true;
+	public static boolean debugging = false;
 	
 //	private Goomba goomba = new Goomba(100, height/2, 2, 100);
 //	private Mario mario = new Mario(500, height/2, 100);
@@ -38,7 +38,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		
 //		g.setColor(Color.black);//tile size is 32x32
 		level.paint(g);
-		level.mario.bottomCollison = false;
+		level.mario.setBottomCollison(false);
 		level.getBlocks().forEach((block)->{ //Collision
 			
 //			if (level.mario.getHitbox().intersects(block.getHitbox())) {
@@ -47,14 +47,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //			}
 			
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
-				level.mario.bottomCollison = true;
+				level.mario.setBottomCollison(true);
 				level.mario.setFalling(false);
 			}
 			
 		});
 		
-		if (!level.mario.bottomCollison) {
-			if (!level.mario.isJumping) {
+		if (!level.mario.isBottomCollison()) {
+			if (!level.mario.isJumping()) {
 				level.mario.setFalling(true);
 			}
 		}

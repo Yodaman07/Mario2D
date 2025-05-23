@@ -24,10 +24,10 @@ public class Mario{
 	private int width, height;				//collision detection (hit box)
 	
 
-	public boolean isJumping = false;
+	private boolean isJumping = false;
 	private boolean isFalling = false;
 	
-	public boolean bottomCollison = false;
+	private boolean bottomCollison = false;
 	
 	private double accel = 3;
 	private double dt = 0.5;
@@ -72,7 +72,7 @@ public class Mario{
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
 	
 	public Rectangle getBottomHitbox() {
-		return new Rectangle(x, y+(3*height/4), width, height/4);
+		return new Rectangle(x+width/4, y+height+2, width/2, 1);
 	}
 
 	public void paint(Graphics g) {
@@ -115,7 +115,7 @@ public class Mario{
 			
 			//Bottom hitbox
 			g2.setColor(Color.green);
-			g2.drawRect(x, y+(3*height/4), width, height/4);
+			g2.drawRect(x+width/4, y+height+2, width/2, 1);
 		
 			//Top hitbox
 //			g2.setColor(Color.blue);
@@ -144,11 +144,18 @@ public class Mario{
 	public void setX(int x) {this.x = x;}
 	public int getX() {return x;}
 	
-	public int getY() {return y;}
-	public void setY(int y) {this.y = y;}
 
+	
 	public boolean isFalling() {return isFalling;}
 	public void setFalling(boolean isFalling) {this.isFalling = isFalling;}
+	
+	public boolean isJumping() {return isJumping;}
+	public void setJumping(boolean isJumping) {this.isJumping = isJumping;}
+	
+	public boolean isBottomCollison() {return bottomCollison;}
+	public void setBottomCollison(boolean bottomCollison) {this.bottomCollison = bottomCollison;}
+	
+	
 	
 
 }
