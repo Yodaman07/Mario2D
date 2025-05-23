@@ -59,7 +59,8 @@ public class Level {
 			
 			switch (entity.get("id")){
 				case 0: //Mario
-					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), 20);
+					int jump = entity.get("jump");
+					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), jump);
 					break;
 				case 1: //Goomba
 					int velocity = entity.get("velocity");

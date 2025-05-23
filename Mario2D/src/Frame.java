@@ -38,11 +38,27 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		
 //		g.setColor(Color.black);//tile size is 32x32
 		level.paint(g);
+		level.mario.bottomCollison = false;
 		level.getBlocks().forEach((block)->{ //Collision
-			if (level.mario.getHitbox().intersects(block.getHitbox())) {
-//				level.mario
+			
+//			if (level.mario.getHitbox().intersects(block.getHitbox())) {
+//				level.mario.setVx(0);
+//				level.mario.setX(level.mario.getX()-5);
+//			}
+			
+			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
+				level.mario.bottomCollison = true;
+				level.mario.setFalling(false);
 			}
+			
 		});
+		
+		if (!level.mario.bottomCollison) {
+			if (!level.mario.isJumping) {
+				level.mario.setFalling(true);
+			}
+		}
+		
 		
 //		if(mario.getX() + mario.getWidth() >= goomba.getX() && mario.getX() <= goomba.getX()) {
 //			mario.setX(0);
@@ -98,11 +114,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 				break;
 			case (65): //a
 				System.out.println("left");
-				m.setVX(-3);
+				m.setVx(-3);
 				break;
 			case (68): //d
 				System.out.println("right");
-				m.setVX(3);
+				m.setVx(3);
 				break;
 			case (83): //s
 				System.out.println("down");
@@ -119,10 +135,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 		switch (e.getKeyCode()) {
 			case (65): //a
-				m.setVX(0);
+				m.setVx(0);
 				break;
 			case (68): //d
-				m.setVX(0);
+				m.setVx(0);
 				break;	
 		}
 	}

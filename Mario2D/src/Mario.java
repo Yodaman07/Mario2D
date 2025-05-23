@@ -15,6 +15,7 @@ public class Mario{
 	private int vx, vy;						//movement variables
 	private double size;
 	private double jump;
+	private double maxJumpV;
 	private Image forward, backward, crouch, jumping;
 	private AffineTransform tx;
 	
@@ -23,8 +24,10 @@ public class Mario{
 	private int width, height;				//collision detection (hit box)
 	
 
-	private boolean isJumping = false;
+	public boolean isJumping = false;
 	private boolean isFalling = false;
+	
+	public boolean bottomCollison = false;
 	
 	private double accel = 3;
 	private double dt = 0.5;
@@ -39,6 +42,7 @@ public class Mario{
 		this.height = (int) (32*scaleHeight);
 		
 		this.jump = jump;
+		this.maxJumpV = jump;
 		
 		forward = getImage("/imgs/Mario.png");
 		
@@ -51,6 +55,7 @@ public class Mario{
 			return;
 		}
 		isJumping = true;
+		jump = maxJumpV;
 	}
 	
 	public void fall() {
@@ -59,24 +64,29 @@ public class Mario{
 		jump = 0;
 	}
 
-	public void setVX(int vx) {this.vx = vx;}
-	public void setVY(int vy) {this.vy = vy;}
+	public void setVx(int vx) {this.vx = vx;}
+	public int getVx() {return vx;}
+	public int getVy() {return vy;}
+	public void setVy(int vy) {this.vy = vy;}
 	
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
+	
+	public Rectangle getBottomHitbox() {
+		return new Rectangle(x, y+(3*height/4), width, height/4);
+	}
 
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		x+=vx;
-		x+=vy;
+//		x+=vy;
 		
 		init(x, y);
 		g2.drawImage(forward, tx, null);
 		
 		
-		if (Frame.debugging) {
-			g2.setColor(Color.red);
-			g2.drawRect(x, y, width, height);
-		}
+		
+//		if (!grounded) {isFalling = true;}
+//		if (grounded) {isFalling = false;}
 		
 		if(isJumping) {
 			
@@ -90,13 +100,31 @@ public class Mario{
 		if(isFalling) {
 			jump += accel * dt;
 			y = (int) (y + (dt * jump) + (0.5 * accel * dt * dt));
-			if(y >= 256) {
+			
+			if (bottomCollison) {
 				isFalling = false;
 			}
 		}
 		
+		
+		
+		
+		if (Frame.debugging) {
+			g2.setColor(Color.red);
+			g2.drawRect(x, y, width, height);
+			
+			//Bottom hitbox
+			g2.setColor(Color.green);
+			g2.drawRect(x, y+(3*height/4), width, height/4);
+		
+			//Top hitbox
+//			g2.setColor(Color.blue);
+//			g2.drawRect(x, y, width, height/4);
+		}
 	}
 	
+	
+
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
@@ -115,5 +143,12 @@ public class Mario{
 	
 	public void setX(int x) {this.x = x;}
 	public int getX() {return x;}
+	
+	public int getY() {return y;}
+	public void setY(int y) {this.y = y;}
+
+	public boolean isFalling() {return isFalling;}
+	public void setFalling(boolean isFalling) {this.isFalling = isFalling;}
+	
 
 }
