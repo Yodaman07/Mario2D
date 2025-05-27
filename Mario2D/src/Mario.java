@@ -38,13 +38,13 @@ public class Mario{
 
 		this.x = x;
 		this.y = y;
-		this.width = (int) (24*scaleWidth);
-		this.height = (int) (32*scaleHeight);
+		this.width = (int) (32*scaleWidth);
+		this.height = (int) (64*scaleHeight);
 		
 		this.jump = jump;
 		this.maxJumpV = jump;
 		
-		forward = getImage("/imgs/Mario.png");
+		forward = getImage("/imgs/Mario_Right.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
 		init(x,y);
@@ -71,6 +71,18 @@ public class Mario{
 	
 	public Rectangle getBottomHitbox() {
 		return new Rectangle(x+width/4, y+height, width/2, 1);
+	}
+	
+	public Rectangle getTopHitbox() {
+		return new Rectangle(x+width/4, y, width/2, 1);
+	}
+	
+	public Rectangle getRightHitbox() {
+		return new Rectangle(x+width, y+(height/8), 1, (3*height/4));
+	}
+	
+	public Rectangle getLeftHitbox() {
+		return new Rectangle(x, y+(height/8), 1, (3*height/4));
 	}
 
 	public void paint(Graphics g) {
@@ -115,8 +127,16 @@ public class Mario{
 			g2.drawRect(x+width/4, y+height, width/2, 1);
 		
 			//Top hitbox
-//			g2.setColor(Color.blue);
-//			g2.drawRect(x, y, width, height/4);
+			g2.setColor(Color.orange);
+			g2.drawRect(x+width/4, y, width/2, 1);
+			
+			//Right Hitbox
+			g2.setColor(Color.blue);
+			g2.drawRect(x+width, y+(height/4), 1, (height/2));
+			
+			g2.setColor(Color.pink);
+			g2.drawRect(x, y+(height/8), 1, (3*height/4));
+			
 		}
 	}
 	
@@ -143,7 +163,7 @@ public class Mario{
 
 	public int getX() {return x;}
 	public int getHeight() {return height;}
-	
+	public int getWidth() {return width;}
 
 	
 	public boolean isFalling() {return isFalling;}

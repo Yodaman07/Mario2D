@@ -40,18 +40,27 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		level.mario.setBottomCollison(false);
 		level.getBlocks().forEach((block)->{ //Collision
 			
-//			if (level.mario.getHitbox().intersects(block.getHitbox())) {
-//				level.mario.setVx(0);
-//				level.mario.setX(level.mario.getX()-5);
-//			}
-			
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
-				
 				level.mario.setFalling(false);
 				level.mario.setBottomCollison(true);
 		        level.mario.setY(block.getY() - level.mario.getHeight()); //AI assisted help for repositioning
-
 			}
+			
+			
+			if (level.mario.getRightHitbox().intersects(block.getHitbox())) {
+				level.mario.setX(block.getX() - level.mario.getWidth());
+			}
+			
+			if (level.mario.getLeftHitbox().intersects(block.getHitbox())) {
+				level.mario.setX(block.getX() + level.mario.getWidth());
+			}
+			
+			
+			if (level.mario.getTopHitbox().intersects(block.getHitbox())) {
+				level.mario.setJumping(false);
+				level.mario.setFalling(true);
+			}
+			
 			
 		});
 		

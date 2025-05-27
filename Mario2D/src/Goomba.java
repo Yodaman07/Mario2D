@@ -23,7 +23,7 @@ public class Goomba extends Enemy{
 		this.height = (int) (32*scaleHeight);
 		walkDistance = d;
 		
-		forward = getImage("/imgs/Goomba.png");
+		forward = getImage("/imgs/Goomba_2.png");
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
