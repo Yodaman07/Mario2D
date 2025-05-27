@@ -45,6 +45,7 @@ public class Mario{
 		this.maxJumpV = jump;
 		
 		forward = getImage("/imgs/Mario.png");
+		jumping = getImage("/imgs/Mario_Jump.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
 		init(x,y);
@@ -78,12 +79,14 @@ public class Mario{
 		x+=vx;
 		
 		init(x, y);
-		g2.drawImage(forward, tx, null);
+		
+		if(isJumping) {
+			g2.drawImage(jumping, tx, null);
+		}else {
+			g2.drawImage(forward, tx, null);
+		}
 		
 		
-		
-//		if (!grounded) {isFalling = true;}
-//		if (grounded) {isFalling = false;}
 		
 		if(isJumping) {
 			

@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,8 +24,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //	private Mario mario = new Mario(500, height/2, 100);
 
 
-//	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
-	private Level level = new LevelLoader().load("src/levels/testing.json");
+	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+	//private Level level = new LevelLoader().load("src/levels/testing.json");
 	
 
 	public static int width = 800;//25 tiles
@@ -53,6 +52,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 			}
 			
+			if (level.yoshi.getBottomHitbox().intersects(block.getHitbox())) {
+				
+				level.yoshi.setFalling(false);
+				level.yoshi.setBottomCollison(true);
+		        level.yoshi.setY(block.getY() - level.mario.getHeight()); //AI assisted help for repositioning
+
+			}
+			
 		});
 		
 		if (!level.mario.isBottomCollison()) {
@@ -61,6 +68,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 			}
 		}
 		
+		if (!level.yoshi.isBottomCollison()) {
+			if (!level.yoshi.isJumping()) {
+				level.yoshi.setFalling(true);
+			}
+		}
 		
 	}
 	
@@ -101,18 +113,22 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		System.out.println(e.getKeyCode());
 		Mario m = level.mario;
+		Yoshi y = level.yoshi;
 		switch (e.getKeyCode()) {
 			case (87): //w
 				System.out.println("up");
-				m.jump();
+				//m.jump();
+				y.jump();
 				break;
 			case (65): //a
 				System.out.println("left");
-				m.setVx(-3);
+				//m.setVx(-3);
+				y.setVx(-3);
 				break;
 			case (68): //d
 				System.out.println("right");
-				m.setVx(3);
+				//m.setVx(3);
+				y.setVx(3);
 				break;
 			case (83): //s
 				System.out.println("down");
@@ -126,13 +142,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		Mario m = level.mario;
-
+		Yoshi y = level.yoshi;
 		switch (e.getKeyCode()) {
 			case (65): //a
 				m.setVx(0);
+				y.setVx(0);
 				break;
 			case (68): //d
 				m.setVx(0);
+				y.setVx(0);
 				break;	
 		}
 	}

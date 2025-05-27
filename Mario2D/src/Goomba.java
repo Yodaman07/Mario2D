@@ -26,7 +26,6 @@ public class Goomba extends Enemy{
 		forward = getImage("/imgs/Goomba.png");
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
-		init(x, y); 				//initialize the location of the image
 	}
 	
 	@Override
