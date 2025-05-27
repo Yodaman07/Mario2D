@@ -61,6 +61,13 @@ public class StaticTexture{
 		
 	}
 	
+	
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+
+
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height); }
 	public int getY() {return y;}
 	public int getX() {return x;}

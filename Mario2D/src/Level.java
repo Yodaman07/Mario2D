@@ -18,7 +18,7 @@ public class Level {
 	private transient ArrayList<StaticTexture> blocks = new ArrayList<StaticTexture>();
 	private transient ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public transient Mario mario;
-	
+	public transient Yoshi yoshi;
 	//transient means it won't be serialized
 	
 	public Level() {}
@@ -28,10 +28,11 @@ public class Level {
 	
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-	
+	 
 		for  (StaticTexture b: blocks) {b.paint(g2);}
 		for  (Enemy e: enemies) {e.paint(g2);}
 		mario.paint(g2);
+		yoshi.paint(g2);
 		
 	}
 	
@@ -62,7 +63,7 @@ public class Level {
 			switch (entity.get("id")){
 				case 0: //Mario
 					int jump = entity.get("jump");
-					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), jump);
+					mario = new Mario(Level.cTp(x, 32), Level.cTp(y, 32), 20);
 					break;
 				case 1: //Goomba
 					int velocity = entity.get("velocity");
@@ -70,6 +71,7 @@ public class Level {
 					enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), velocity, dist));
 					break;
 				case 2:
+					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), 20);
 					break;
 				case 3:
 					break;
