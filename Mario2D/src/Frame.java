@@ -19,12 +19,11 @@ import javax.swing.Timer;
 public class Frame extends JPanel implements ActionListener, KeyListener{
 
 
-	public static boolean debugging = false;
+	public static boolean debugging = true;
 	
 //	private Goomba goomba = new Goomba(100, height/2, 2, 100);
 //	private Mario mario = new Mario(500, height/2, 100);
-	private StaticTexture brick;
-	
+
 
 //	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 	private Level level = new LevelLoader().load("src/levels/testing.json");
@@ -47,8 +46,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //			}
 			
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
-				level.mario.setBottomCollison(true);
+				
 				level.mario.setFalling(false);
+				level.mario.setBottomCollison(true);
+		        level.mario.setY(block.getY() - level.mario.getHeight()); //AI assisted help for repositioning
+
 			}
 			
 		});
@@ -60,14 +62,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 		}
 		
 		
-//		if(mario.getX() + mario.getWidth() >= goomba.getX() && mario.getX() <= goomba.getX()) {
-//			mario.setX(0);
-//		}
-//		
-//		//check right side collision
-//		if(mario.getX() <= goomba.getX() + goomba.getWidth() && mario.getX() + mario.getWidth() >= goomba.getX() + goomba.getWidth()) {
-//			mario.setX(0);
-//		}
 	}
 	
 	public static void main(String[] args) {

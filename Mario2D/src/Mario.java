@@ -66,19 +66,16 @@ public class Mario{
 
 	public void setVx(int vx) {this.vx = vx;}
 	public int getVx() {return vx;}
-	public int getVy() {return vy;}
-	public void setVy(int vy) {this.vy = vy;}
 	
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
 	
 	public Rectangle getBottomHitbox() {
-		return new Rectangle(x+width/4, y+height+2, width/2, 1);
+		return new Rectangle(x+width/4, y+height, width/2, 1);
 	}
 
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		x+=vx;
-//		x+=vy;
 		
 		init(x, y);
 		g2.drawImage(forward, tx, null);
@@ -115,7 +112,7 @@ public class Mario{
 			
 			//Bottom hitbox
 			g2.setColor(Color.green);
-			g2.drawRect(x+width/4, y+height+2, width/2, 1);
+			g2.drawRect(x+width/4, y+height, width/2, 1);
 		
 			//Top hitbox
 //			g2.setColor(Color.blue);
@@ -142,7 +139,10 @@ public class Mario{
 	}
 	
 	public void setX(int x) {this.x = x;}
+	public void setY(int y) {this.y = y;}
+
 	public int getX() {return x;}
+	public int getHeight() {return height;}
 	
 
 	

@@ -44,9 +44,11 @@ public class Level {
 				case 1: //Orange_Brick.png
 					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Orange_Brick.png"));
 					break;
-				case 2:
+				case 2: //Brick.png
+					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Brick.png"));
 					break;
-				case 3:
+				case 3: //Luck_Block.png
+					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Lucky_Block.png"));
 					break;
 			}
 		}
