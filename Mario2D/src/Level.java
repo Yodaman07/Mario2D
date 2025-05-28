@@ -23,6 +23,15 @@ public class Level {
 	
 	public Level() {}
 	//Load level with LevelLoader
+	
+	public Level(String type, String name, int id) {
+		this.type = type;
+		this.name = name;
+		this.id = id;
+		
+		blockLayout = new ArrayList<HashMap<String, Integer>>();
+		entities = new ArrayList<HashMap<String, Integer>>();
+	}//When building the level via editor
 
 	
 	
@@ -31,8 +40,8 @@ public class Level {
 	 
 		for  (StaticTexture b: blocks) {b.paint(g2);}
 		for  (Enemy e: enemies) {e.paint(g2);}
-		mario.paint(g2);
-		yoshi.paint(g2);
+//		mario.paint(g2);
+//		yoshi.paint(g2);
 		
 	}
 	
@@ -86,6 +95,12 @@ public class Level {
 	}
 	
 	
+	public void updateBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) { //Will OVERWRITE the current block layout - To be used in the editor
+		blockLayout = newLayout;
+	}
+	public ArrayList<HashMap<String, Integer>> getCurrentLayout(){return blockLayout;}
+	
+	
 	@Override
 	public String toString() {
 		return "Level [type=" + type + ", name=" + name + ", id=" + id + ", blockLayout=" + blockLayout
@@ -97,6 +112,10 @@ public class Level {
 		//CoordToPixel 
 		//The frame will start at 0,0 being the top left and going to the right and down as the coords increase
 		return coord*scaler;
+	}
+	
+	public static int pTc(int pixel, int scaler) { //maps pixel values to coordinate values 
+		return (pixel/scaler);
 	}
 }
 

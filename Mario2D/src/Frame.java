@@ -85,8 +85,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Frame frame = new Frame();
-//		Editor e = new Editor();
+//		Frame frame = new Frame();
+		Editor e = new Editor();
 	}
 	
 	
