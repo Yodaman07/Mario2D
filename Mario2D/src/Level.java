@@ -71,7 +71,7 @@ public class Level {
 					enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), velocity, dist));
 					break;
 				case 2:
-					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), 20);
+					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), 25);
 					break;
 				case 3:
 					break;
