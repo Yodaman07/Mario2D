@@ -10,8 +10,9 @@ import java.util.HashMap;
 public class Editor extends JPanel implements ActionListener, MouseListener {
 
 	
-	public HashMap<String, Integer> options = new HashMap<String, Integer>();
+	public HashMap<String, Integer> blockOptions = new HashMap<String, Integer>();
 	public int selectedId = 0; //NULL
+	public MODE mode = MODE.ADD;
 	public Level level;
 		
     public JFrame f;
@@ -37,25 +38,41 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
     }
     
     public void configHashMap() { //BASED OFF OF VALUES FROM LEVEL.JAVA
-    	options.put("Orange Brick", 1);
-    	options.put("Brick", 2);
-    	options.put("Lucky Block", 3);
+    	blockOptions.put("Orange Brick", 1);
+    	blockOptions.put("Brick", 2);
+    	blockOptions.put("Lucky Block", 3);
     }
 
 
     public void initPanel(){
        panel = new JPanel();
        panel.setBackground(Color.cyan);
-       panel.setSize(600, 50);
+       panel.setSize(500, 50);
        panel.setLocation(100, 0);
        
        
-       options.forEach((String name, Integer id)->{
+       //BLOCK OPTION
+       blockOptions.forEach((String name, Integer id)->{
     	   JButton btn = new JButton(name);
     	   btn.addActionListener(this);
     	   panel.add(btn);
        });
        
+       //OPTIONS BAR
+       JPanel optionPanel = new JPanel();
+       optionPanel.setBackground(Color.pink);
+       optionPanel.setSize(100,75);
+       optionPanel.setLocation(700,0);
+       
+       JButton save = new JButton("Save");
+       JButton delete = new JButton("Delete");
+       save.addActionListener(this);
+       delete.addActionListener(this);
+       optionPanel.add(save);
+       optionPanel.add(delete);
+       
+       
+       f.add(optionPanel);
        f.add(panel);
     }
 
@@ -77,46 +94,123 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-    	System.out.println("A");
     	repaint();
     	f.repaint();
         String event = e.getActionCommand();
         System.out.println(event);
         
         
-        options.forEach((String name, Integer id)->{
+        blockOptions.forEach((String name, Integer id)->{
      	   if (event.equals(name)) {
+     		   mode = MODE.ADD;
      		   selectedId = id;
      	   }
         });
+        
+        if (event.equals("Delete")) {
+        	mode = MODE.DELETE;
+        }
     }
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
-		System.out.println("B");
-		Point p = MouseInfo.getPointerInfo().getLocation();
+//		//You need to click twice whenever you change blocks, i'm not fully sure why
+//		Point p = MouseInfo.getPointerInfo().getLocation();
+//		int x = Level.pTc(p.x, 32);
+//		int y = Level.pTc(p.y, 32) - 2;
+//		System.out.println("A");
+//		
+//		if (mode.equals(MODE.ADD)) {
+//			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
+//			blockInfo.put("id", selectedId);
+//			blockInfo.put("x", x);
+//			blockInfo.put("y", y);
+//			
+//			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+//			currentLayout.add(blockInfo);
+//			level.overwriteBlockLayout(currentLayout);
+//			level.loadBlocks();
+//			System.out.println(level.getBlocks());
+//		}else if (mode.equals(MODE.DELETE)) {
+//			System.out.println("Delete at x: " + x + " and y: " + y );
+//			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+//			
+//			int index = getIndexToRemove(currentLayout, x, y);
+//			if (index != -1) {
+//				System.out.println(currentLayout);
+//				currentLayout.remove(index);
+//				System.out.println(currentLayout);
+//			}
+//			
+//			level.overwriteBlockLayout(currentLayout);
+//			level.loadBlocks();
+//			System.out.println(level.getBlocks());
+//		}
+//		
+//		f.repaint();
+//		repaint();
+	}
+	
+	private int getIndexToRemove(ArrayList<HashMap<String, Integer>> layout, int x, int y) {
 		
-		HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
-		blockInfo.put("id", selectedId);
-		blockInfo.put("x", Level.pTc(p.x, 32));
-		blockInfo.put("y", Level.pTc(p.y, 32) - 2);
-		
-		ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-		currentLayout.add(blockInfo);
-		level.overwriteBlockLayout(currentLayout);
-		level.loadBlocks();	
-		
-		f.repaint();
-		repaint();
+		for (int i = 0; i < layout.size(); i++) {
+			if ((layout.get(i).get("x") == x) && (layout.get(i).get("y") == y)) {
+				System.out.println("MATCH");
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		//You need to click twice whenever you change blocks, i'm not fully sure why
+		Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = Level.pTc(p.x, 32);
+		int y = Level.pTc(p.y, 32) - 2;
+		System.out.println("A");
+		
+		if (mode.equals(MODE.ADD)) {
+			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
+			blockInfo.put("id", selectedId);
+			blockInfo.put("x", x);
+			blockInfo.put("y", y);
+			
+			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+			currentLayout.add(blockInfo);
+			level.overwriteBlockLayout(currentLayout);
+			level.loadBlocks();
+			System.out.println(level.getBlocks());
+		}else if (mode.equals(MODE.DELETE)) {
+			System.out.println("Delete at x: " + x + " and y: " + y );
+			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+			
+			int index = getIndexToRemove(currentLayout, x, y);
+			if (index != -1) {
+				System.out.println(currentLayout);
+				currentLayout.remove(index);
+				System.out.println(currentLayout);
+			}
+			
+			level.overwriteBlockLayout(currentLayout);
+			level.loadBlocks();
+			System.out.println(level.getBlocks());
+		}
+		
+		f.repaint();
+//		repaint();
+	}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+}
+
+
+enum MODE{
+	ADD,
+	MODIFY,
+	DELETE
 }
