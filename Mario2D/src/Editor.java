@@ -14,7 +14,9 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	public int selectedId = 0; //NULL
 	public Level level;
 		
-    JFrame f;
+    public JFrame f;
+    public JPanel panel;
+    
     public Editor(){
     	this.configHashMap();
     	
@@ -42,7 +44,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 
     public void initPanel(){
-       JPanel panel = new JPanel();
+       panel = new JPanel();
        panel.setBackground(Color.cyan);
        panel.setSize(600, 50);
        panel.setLocation(100, 0);
@@ -62,6 +64,8 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
         super.paintComponent(g);  
         level.paint(g);
 
+        
+        g.setColor(Color.black);
         for (int i = 0; i < Frame.width; i+=32) {
         	g.drawLine(i, 0, i, Frame.height);
         }
@@ -73,6 +77,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
+    	System.out.println("A");
     	repaint();
     	f.repaint();
         String event = e.getActionCommand();
@@ -88,10 +93,9 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println();
+
+		System.out.println("B");
 		Point p = MouseInfo.getPointerInfo().getLocation();
-		
 		
 		HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
 		blockInfo.put("id", selectedId);
@@ -100,8 +104,11 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		
 		ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
 		currentLayout.add(blockInfo);
-		level.updateBlockLayout(currentLayout);
-		level.loadBlocks();
+		level.overwriteBlockLayout(currentLayout);
+		level.loadBlocks();	
+		
+		f.repaint();
+		repaint();
 	}
 	
 	@Override

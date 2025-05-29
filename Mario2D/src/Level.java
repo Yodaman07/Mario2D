@@ -40,9 +40,13 @@ public class Level {
 	 
 		for  (StaticTexture b: blocks) {b.paint(g2);}
 		for  (Enemy e: enemies) {e.paint(g2);}
-//		mario.paint(g2);
-//		yoshi.paint(g2);
 		
+		if (mario != null) {
+			mario.paint(g2);	
+		}
+		if (yoshi != null) {
+			yoshi.paint(g2);
+		}
 	}
 	
 	public void loadBlocks() {
@@ -89,13 +93,13 @@ public class Level {
 		}
 		
 	}
+
+	//TODO: ADD ERROR THROWING
+	//Blocks MUST be loaded beforehand
+	public ArrayList<StaticTexture> getBlocks(){ return blocks;}
 	
-	public ArrayList<StaticTexture> getBlocks(){ //Blocks MUST be loaded beforehand
-		return blocks;
-	}
 	
-	
-	public void updateBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) { //Will OVERWRITE the current block layout - To be used in the editor
+	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) { //Will OVERWRITE the current block layout - To be used in the editor
 		blockLayout = newLayout;
 	}
 	public ArrayList<HashMap<String, Integer>> getCurrentLayout(){return blockLayout;}

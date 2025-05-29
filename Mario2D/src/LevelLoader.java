@@ -11,7 +11,7 @@ public class LevelLoader{
 		System.out.println("Obj created");
 	}
 	
-	public Level load(String filePath) {	
+	public Level load(String filePath) { //de serializing
 		Gson gson = new Gson();
 		try {
 			
@@ -32,5 +32,18 @@ public class LevelLoader{
 		return null;
 	}
 	
+//	public void save(String filePath, Level level) { //serializing a level object to a file
+//		Gson gson = new Gson();
+//		try {
+//			File f = new File(filePath);
+//			FileReader fr = new FileReader(f);
+//			
+//			String a = gson.toJson(level);
+//			System.out.println(a);
+//			
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }
