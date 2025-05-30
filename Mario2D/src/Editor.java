@@ -6,23 +6,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Editor extends JPanel implements ActionListener, MouseListener {
 
 	
 	public HashMap<String, Integer> blockOptions = new HashMap<String, Integer>();
 	public int selectedId = 0; //NULL
+	private boolean hasBeenSaved = false;;
+	
 	public MODE mode = MODE.ADD;
 	public Level level;
 		
-    public JFrame f;
-    public JPanel panel;
+    private JFrame f;
+    private JPanel panel;
+    
     
     public Editor(){
     	this.configHashMap();
+    	this.promptCreation();
     	
     	f = new JFrame("Level Editor");
         level = new Level("level", "anothertest", 102);
+
         initPanel();
     	
         
@@ -110,30 +116,32 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
         if (event.equals("Delete")) {
         	mode = MODE.DELETE;
         }
+        
+        if (event.equals("Save")) {
+        	this.hasBeenSaved = true;
+        	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
+        	LevelLoader ll = new LevelLoader();
+        	ll.save("src/levels/newLevel.json", level);
+        }
     }
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-//		//You need to click twice whenever you change blocks, i'm not fully sure why
 		Point p = MouseInfo.getPointerInfo().getLocation();
 		int x = Level.pTc(p.x, 32);
 		int y = Level.pTc(p.y, 32) - 2;
-//		System.out.println("A");
-//		
 		if (mode.equals(MODE.ADD)) {
-			System.out.println("add");
 			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
 			blockInfo.put("id", selectedId);
 			blockInfo.put("x", x);
 			blockInfo.put("y", y);
-//			
+			
 			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
 			currentLayout.add(blockInfo);
 			level.overwriteBlockLayout(currentLayout);
 			level.loadBlocks();
-			System.out.println(level.getBlocks());
+//			System.out.println(level.getBlocks());
 		}else if (mode.equals(MODE.DELETE)) {
-			System.out.println("del");
 			System.out.println("Delete at x: " + x + " and y: " + y );
 			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
 			
@@ -146,9 +154,8 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 			
 			level.overwriteBlockLayout(currentLayout);
 			level.loadBlocks();
-			System.out.println(level.getBlocks());
 		}
-//		
+
 		f.repaint();
 		repaint();
 	}
@@ -168,11 +175,28 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+		f.repaint();
+		repaint();
+	}
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+	
+	public String[] promptCreation(){
+		JFrame popUp = new JFrame("Create a New Level");
+		
+		popUp.setSize(400, 100); // init code
+		popUp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		popUp.setVisible(true);
+		
+		
+		JTextField name = new JTextField("LevelName", 20);
+		popUp.add(name);
+		popUp.pack();
+		return new String[1];
+	}
 }
 
 

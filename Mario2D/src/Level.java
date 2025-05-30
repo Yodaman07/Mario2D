@@ -56,15 +56,12 @@ public class Level {
 			int y = block.get("y");
 			switch (block.get("id")){
 				case 1: //Orange_Brick.png
-					System.out.println("LOAD 1 ORANGE BRICK");
 					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Orange_Brick.png"));
 					break;
 				case 2: //Brick.png
-					System.out.println("LOAD 1 BRICK");
 					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Brick.png"));
 					break;
 				case 3: //Luck_Block.png
-					System.out.println("LOAD 1 LUCKY BLOCK");
 					blocks.add(new StaticTexture(Level.cTp(x, 32), Level.cTp(y, 32), "/imgs/Lucky_Block.png"));
 					break;
 			}
@@ -101,10 +98,13 @@ public class Level {
 	//Blocks MUST be loaded beforehand
 	public ArrayList<StaticTexture> getBlocks(){ return blocks;}
 	
-	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) { //Will OVERWRITE the current block layout - To be used in the editor
-		blockLayout = newLayout;
-	}
+	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) {blockLayout = newLayout;} 
+	//Will OVERWRITE the current block layout - To be used in the editor
 	public ArrayList<HashMap<String, Integer>> getCurrentLayout(){return blockLayout;}
+	
+	public ArrayList<HashMap<String, Integer>> getCurrentEntities(){return entities;}
+	public void overwriteEntities(ArrayList<HashMap<String, Integer>> newEntites) {entities = newEntites;}
+	
 	
 	
 	@Override

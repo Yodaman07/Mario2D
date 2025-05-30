@@ -103,6 +103,8 @@ public class Mario{
 			g2.drawImage(forward, tx, null);
 		}else if(vx < 0) {
 			g2.drawImage(backward, tx, null);
+		}else {
+			g2.drawImage(forward, tx, null);
 		}
 		
 		

@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
@@ -32,18 +34,24 @@ public class LevelLoader{
 		return null;
 	}
 	
-//	public void save(String filePath, Level level) { //serializing a level object to a file
-//		Gson gson = new Gson();
-//		try {
-//			File f = new File(filePath);
-//			FileReader fr = new FileReader(f);
-//			
-//			String a = gson.toJson(level);
-//			System.out.println(a);
-//			
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void save(String filePath, Level level) { //serializing a level object to a file
+		Gson gson = new Gson();
+			
+			try {
+				File f = new File(filePath);
+				FileWriter fw = new FileWriter(f);
+				
+				String jsonEncoded = gson.toJson(level);
+				
+				fw.write(jsonEncoded);
+				fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		
+	}
 	
 }
