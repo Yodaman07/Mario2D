@@ -115,40 +115,42 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 //		//You need to click twice whenever you change blocks, i'm not fully sure why
-//		Point p = MouseInfo.getPointerInfo().getLocation();
-//		int x = Level.pTc(p.x, 32);
-//		int y = Level.pTc(p.y, 32) - 2;
+		Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = Level.pTc(p.x, 32);
+		int y = Level.pTc(p.y, 32) - 2;
 //		System.out.println("A");
 //		
-//		if (mode.equals(MODE.ADD)) {
-//			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
-//			blockInfo.put("id", selectedId);
-//			blockInfo.put("x", x);
-//			blockInfo.put("y", y);
+		if (mode.equals(MODE.ADD)) {
+			System.out.println("add");
+			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
+			blockInfo.put("id", selectedId);
+			blockInfo.put("x", x);
+			blockInfo.put("y", y);
 //			
-//			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-//			currentLayout.add(blockInfo);
-//			level.overwriteBlockLayout(currentLayout);
-//			level.loadBlocks();
-//			System.out.println(level.getBlocks());
-//		}else if (mode.equals(MODE.DELETE)) {
-//			System.out.println("Delete at x: " + x + " and y: " + y );
-//			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-//			
-//			int index = getIndexToRemove(currentLayout, x, y);
-//			if (index != -1) {
-//				System.out.println(currentLayout);
-//				currentLayout.remove(index);
-//				System.out.println(currentLayout);
-//			}
-//			
-//			level.overwriteBlockLayout(currentLayout);
-//			level.loadBlocks();
-//			System.out.println(level.getBlocks());
-//		}
+			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+			currentLayout.add(blockInfo);
+			level.overwriteBlockLayout(currentLayout);
+			level.loadBlocks();
+			System.out.println(level.getBlocks());
+		}else if (mode.equals(MODE.DELETE)) {
+			System.out.println("del");
+			System.out.println("Delete at x: " + x + " and y: " + y );
+			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+			
+			int index = getIndexToRemove(currentLayout, x, y);
+			if (index != -1) {
+				System.out.println(currentLayout);
+				currentLayout.remove(index);
+				System.out.println(currentLayout);
+			}
+			
+			level.overwriteBlockLayout(currentLayout);
+			level.loadBlocks();
+			System.out.println(level.getBlocks());
+		}
 //		
-//		f.repaint();
-//		repaint();
+		f.repaint();
+		repaint();
 	}
 	
 	private int getIndexToRemove(ArrayList<HashMap<String, Integer>> layout, int x, int y) {
@@ -164,41 +166,6 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//You need to click twice whenever you change blocks, i'm not fully sure why
-		Point p = MouseInfo.getPointerInfo().getLocation();
-		int x = Level.pTc(p.x, 32);
-		int y = Level.pTc(p.y, 32) - 2;
-		System.out.println("A");
-		
-		if (mode.equals(MODE.ADD)) {
-			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
-			blockInfo.put("id", selectedId);
-			blockInfo.put("x", x);
-			blockInfo.put("y", y);
-			
-			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-			currentLayout.add(blockInfo);
-			level.overwriteBlockLayout(currentLayout);
-			level.loadBlocks();
-			System.out.println(level.getBlocks());
-		}else if (mode.equals(MODE.DELETE)) {
-			System.out.println("Delete at x: " + x + " and y: " + y );
-			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-			
-			int index = getIndexToRemove(currentLayout, x, y);
-			if (index != -1) {
-				System.out.println(currentLayout);
-				currentLayout.remove(index);
-				System.out.println(currentLayout);
-			}
-			
-			level.overwriteBlockLayout(currentLayout);
-			level.loadBlocks();
-			System.out.println(level.getBlocks());
-		}
-		
-		f.repaint();
-//		repaint();
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {}

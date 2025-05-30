@@ -50,7 +50,7 @@ public class Level {
 	}
 	
 	public void loadBlocks() {
-		
+		blocks.clear(); //Remember to clear the arrayList before you load it
 		for (HashMap<String, Integer> block : blockLayout) {
 			int x = block.get("x");
 			int y = block.get("y");
@@ -100,7 +100,6 @@ public class Level {
 	//TODO: ADD ERROR THROWING
 	//Blocks MUST be loaded beforehand
 	public ArrayList<StaticTexture> getBlocks(){ return blocks;}
-	
 	
 	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) { //Will OVERWRITE the current block layout - To be used in the editor
 		blockLayout = newLayout;
