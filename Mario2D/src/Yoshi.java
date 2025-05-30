@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -31,10 +32,10 @@ public class Yoshi {
 		this.y = y;
 		this.jump = jump;
 		maxJumpV = jump;
-		this.width = (int) (32*scaleWidth);
-		this.height = (int) (32*scaleHeight);
+		this.width = (int) (43*scaleWidth);
+		this.height = (int) (64*scaleHeight);
 		
-		forward = getImage("/imgs/Yoshi.png");
+		forward = getImage("/imgs/YOSHI.png");
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 
@@ -44,8 +45,8 @@ public class Yoshi {
 		if(isJumping || isFalling) {
 			return;
 		}
-		isJumping = true;
 		jump = maxJumpV;
+		isJumping = true;
 	}
 	
 	public void fall() {
@@ -81,6 +82,27 @@ public class Yoshi {
 			if (bottomCollison) {
 				isFalling = false;
 			}
+		}
+		
+		if (Frame.debugging) {
+			g2.setColor(Color.red);
+			g2.drawRect(x, y, width, height);
+			
+			//Bottom hitbox
+			g2.setColor(Color.green);
+			g2.drawRect(x+width/4, y+height, width/2, 1);
+		
+			//Top hitbox
+			g2.setColor(Color.orange);
+			g2.drawRect(x+width/4, y, width/2, 1);
+			
+			//Right Hitbox
+			g2.setColor(Color.blue);
+			g2.drawRect(x+width, y+(height/4), 1, (height/2));
+			
+			g2.setColor(Color.pink);
+			g2.drawRect(x, y+(height/8), 1, (3*height/4));
+			
 		}
 		
 		

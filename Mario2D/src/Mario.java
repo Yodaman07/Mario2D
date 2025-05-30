@@ -46,11 +46,14 @@ public class Mario{
 		
 
 		forward = getImage("/imgs/Mario_Right.png");
-
+		backward = getImage("/imgs/Mario_Left.png");
 		jumping = getImage("/imgs/Mario_Jump.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
 		init(x,y);
+		
+		
+		
 	}
 	
 	public void jump() {
@@ -90,16 +93,20 @@ public class Mario{
 
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
-		x+=vx;
+		
 		
 		init(x, y);
 		
 		if(isJumping) {
 			g2.drawImage(jumping, tx, null);
-		}else {
+		}else if(vx > 0) {
 			g2.drawImage(forward, tx, null);
+		}else if(vx < 0) {
+			g2.drawImage(backward, tx, null);
 		}
 		
+		
+		x+=vx;
 		
 		
 		if(isJumping) {

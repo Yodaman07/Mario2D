@@ -24,8 +24,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //	private Mario mario = new Mario(500, height/2, 100);
 
 
-//	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
-	private Level level = new LevelLoader().load("src/levels/testing.json");
+	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+//	private Level level = new LevelLoader().load("src/levels/testing.json");
 	
 
 	public static int width = 800;//25 tiles
@@ -37,6 +37,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 //		g.setColor(Color.black);//tile size is 32x32
 		level.paint(g);
 		level.mario.setBottomCollison(false);
+		level.yoshi.setBottomCollison(false);
 		level.getBlocks().forEach((block)->{ //Collision
 			
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
@@ -130,12 +131,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 			case (65): //a
 				System.out.println("left");
 				//m.setVx(-3);
-				y.setVx(-3);
+				y.setVx(-5);
 				break;
 			case (68): //d
 				System.out.println("right");
 				//m.setVx(3);
-				y.setVx(3);
+				y.setVx(5);
 				break;
 			case (83): //s
 				System.out.println("down");
