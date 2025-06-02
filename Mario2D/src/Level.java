@@ -106,6 +106,8 @@ public class Level {
 	public void overwriteEntities(ArrayList<HashMap<String, Integer>> newEntites) {entities = newEntites;}
 	
 	
+	public String getName() {return this.name;}
+	
 	
 	@Override
 	public String toString() {

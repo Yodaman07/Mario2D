@@ -25,7 +25,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 
 //	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
-	private Level level = new LevelLoader().load("src/levels/newLevel.json");
+	private Level level = new LevelLoader().load("src/levels/CoolLevel.json");
 	
 
 	public static int width = 800;//25 tiles

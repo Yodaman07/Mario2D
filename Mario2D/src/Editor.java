@@ -24,20 +24,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
     
     public Editor(){
     	this.configHashMap();
-    	this.promptCreation();
-    	
-    	f = new JFrame("Level Editor");
-        level = new Level("level", "anothertest", 102);
-
-        initPanel();
-    	
-        
-        f.setSize(800, 512); // init code
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.add(this);
-        f.addMouseListener(this);
-        f.setVisible(true);
-        
+        this.promptCreation();
         
         
         System.out.println("Initialized");
@@ -121,13 +108,15 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
         	this.hasBeenSaved = true;
         	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
         	LevelLoader ll = new LevelLoader();
-        	ll.save("src/levels/newLevel.json", level);
+        	
+        	ll.save("src/levels/" + level.getName() + ".json", level);
         }
     }
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Point p = MouseInfo.getPointerInfo().getLocation();
+		
 		int x = Level.pTc(p.x, 32);
 		int y = Level.pTc(p.y, 32) - 2;
 		if (mode.equals(MODE.ADD)) {
@@ -184,18 +173,52 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {}
 	
-	public String[] promptCreation(){
+	public void promptCreation(){
 		JFrame popUp = new JFrame("Create a New Level");
+		JPanel panel = new JPanel();
 		
 		popUp.setSize(400, 100); // init code
 		popUp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		popUp.setVisible(true);
 		
 		
-		JTextField name = new JTextField("LevelName", 20);
-		popUp.add(name);
+		
+		JTextField name = new JTextField("LevelName", 10);
+		name.addActionListener(this);
+		
+		JButton btn = new JButton("Create Level");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				initFrame(name.getText());
+				popUp.dispose();
+			}
+		});
+
+		
+		panel.add(name);
+		panel.add(btn);
+		
+		popUp.add(panel);
 		popUp.pack();
-		return new String[1];
+		
+	}
+	
+	
+	public void initFrame(String levelName) {
+	  	f = new JFrame("Level Editor - Making: " + levelName);
+        level = new Level("level", levelName, 102);
+
+        initPanel();
+    	
+        
+        f.setSize(800, 512); // init code
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.add(this);
+        f.addMouseListener(this);
+        f.setVisible(true);
 	}
 }
 
