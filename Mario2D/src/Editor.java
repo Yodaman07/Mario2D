@@ -11,37 +11,45 @@ import java.util.Map;
 public class Editor extends JPanel implements ActionListener, MouseListener {
 
 	
-	public HashMap<String, Integer> blockOptions = new HashMap<String, Integer>();
-	public int selectedId = 0; //NULL
+	private HashMap<String, Integer> blockOptions = new HashMap<String, Integer>();
+	private HashMap<String, Integer> entityOptions = new HashMap<String, Integer>();
+	
+	private int selectedId = 0; //NULL
+	private TYPE selectedType; //BLOCK or ENTITY
+	
+	
 	private boolean hasBeenSaved = false;;
 	
-	public MODE mode = MODE.ADD;
-	public Level level;
+	private MODE mode = MODE.ADD;
+	private Level level;
 		
     private JFrame f;
     private JPanel panel;
     
     
     public Editor(){
-    	this.configHashMap();
+    	this.configOptions();
         this.promptCreation();
         
         
         System.out.println("Initialized");
     }
     
-    public void configHashMap() { //BASED OFF OF VALUES FROM LEVEL.JAVA
+    public void configOptions() { //BASED OFF OF VALUES FROM LEVEL.JAVA
     	blockOptions.put("Orange Brick", 1);
     	blockOptions.put("Brick", 2);
     	blockOptions.put("Lucky Block", 3);
+    	
+    	entityOptions.put("Mario", 0);
+    	entityOptions.put("Goomba", 1);
+    	entityOptions.put("Yoshi", 2);
     }
-
-
+    
     public void initPanel(){
-       panel = new JPanel();
+       panel = new JPanel(); // BLOCK OPTION PANEL
        panel.setBackground(Color.cyan);
        panel.setSize(500, 50);
-       panel.setLocation(100, 0);
+       panel.setLocation(100, 500);
        
        
        //BLOCK OPTION
@@ -55,7 +63,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
        JPanel optionPanel = new JPanel();
        optionPanel.setBackground(Color.pink);
        optionPanel.setSize(100,75);
-       optionPanel.setLocation(700,0);
+       optionPanel.setLocation(700, 500);
        
        JButton save = new JButton("Save");
        JButton delete = new JButton("Delete");
@@ -65,10 +73,71 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
        optionPanel.add(delete);
        
        
+       //Entity Panel
+       JPanel entityPanel = new JPanel();
+       entityPanel.setBackground(Color.GRAY);
+       entityPanel.setSize(96, 350);
+       entityPanel.setLocation(816, 40);
+       entityOptions.forEach((String name, Integer id)->{
+    	   JButton btn = new JButton(name);
+    	   btn.addActionListener(this);
+    	   entityPanel.add(btn);
+       });       
+       
+       
        f.add(optionPanel);
        f.add(panel);
+       f.add(entityPanel);
     }
 
+    public void initFrame(String levelName) {
+	  	f = new JFrame("Level Editor - Making: " + levelName);
+        level = new Level("level", levelName, 102);
+
+        initPanel();
+    	
+        
+        f.setSize(800+128, 512+128); // init code
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.add(this);
+        f.addMouseListener(this);
+        f.setVisible(true);
+	}
+
+	public void promptCreation(){
+		JFrame popUp = new JFrame("Create a New Level");
+		JPanel panel = new JPanel();
+		
+		popUp.setSize(400, 100); // init code
+		popUp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		popUp.setVisible(true);
+		
+		
+		
+		JTextField name = new JTextField("LevelName", 10);
+		name.addActionListener(this);
+		
+		JButton btn = new JButton("Create Level");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				initFrame(name.getText());
+				popUp.dispose();
+			}
+		});
+
+		
+		panel.add(name);
+		panel.add(btn);
+		
+		popUp.add(panel);
+		popUp.pack();
+		
+	}
+
+    
     @Override
     public void paint(Graphics g) {
         super.paintComponent(g);  
@@ -76,8 +145,8 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
         
         g.setColor(Color.black);
-        for (int i = 0; i < Frame.width; i+=32) {
-        	g.drawLine(i, 0, i, Frame.height);
+        for (int i = 0; i <= Frame.width; i+=32) {
+        	g.drawLine(i, 0, i, Frame.height-32);
         }
         
         for (int i = 0; i < Frame.height; i+=32) {
@@ -86,27 +155,40 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e){ //I.E. a button press
     	repaint();
     	f.repaint();
         String event = e.getActionCommand();
-        System.out.println(event);
+        System.out.println(event + " event");
+        
+        if (blockOptions.containsKey(event)) { //Figures out what type is selected
+        	selectedType = TYPE.BLOCK;
+        	
+        	blockOptions.forEach((String name, Integer id)->{
+          	   if (event.equals(name)) {
+          		   mode = MODE.ADD;
+          		   selectedId = id;
+          	   }
+             });
+        }else if (entityOptions.containsKey(event)) {
+        	selectedType = TYPE.ENTITY;
+        	
+        	entityOptions.forEach((String name, Integer id)->{
+           	   if (event.equals(name)) {
+           		   mode = MODE.ADD;
+           		   selectedId = id;
+           	   }
+              });
+        }
         
         
-        blockOptions.forEach((String name, Integer id)->{
-     	   if (event.equals(name)) {
-     		   mode = MODE.ADD;
-     		   selectedId = id;
-     	   }
-        });
-        
-        if (event.equals("Delete")) {
+        if (event.equals("Delete")) { //NOTE: Add, delete, and save are protected and can't be the name of any block or entity
         	mode = MODE.DELETE;
         }
         
         if (event.equals("Save")) {
         	this.hasBeenSaved = true;
-        	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
+//        	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
         	LevelLoader ll = new LevelLoader();
         	
         	ll.save("src/levels/" + level.getName() + ".json", level);
@@ -119,20 +201,16 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		
 		int x = Level.pTc(p.x, 32);
 		int y = Level.pTc(p.y, 32) - 2;
-		if (mode.equals(MODE.ADD)) {
-			HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
-			blockInfo.put("id", selectedId);
-			blockInfo.put("x", x);
-			blockInfo.put("y", y);
+		if (!inBounds(x,  y)) {return;}
 			
-			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
-			currentLayout.add(blockInfo);
-			level.overwriteBlockLayout(currentLayout);
-			level.loadBlocks();
-//			System.out.println(level.getBlocks());
+		
+		if (mode.equals(MODE.ADD)) {
+			if (selectedType == TYPE.BLOCK) {this.addBlock(x, y);}
+			else if (selectedType == TYPE.ENTITY) {this.addEntity(x, y);}
+			
 		}else if (mode.equals(MODE.DELETE)) {
-			System.out.println("Delete at x: " + x + " and y: " + y );
-			ArrayList<HashMap<String, Integer>> currentLayout = level.getCurrentLayout();
+			System.out.println("Delete at x: " + (x) + " and y: " + (y) ); //relative to the editor screen (not sidebars)
+			ArrayList<HashMap<String, Integer>> currentLayout = level.getBlockLayout();
 			
 			int index = getIndexToRemove(currentLayout, x, y);
 			if (index != -1) {
@@ -172,54 +250,47 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
-	
-	public void promptCreation(){
-		JFrame popUp = new JFrame("Create a New Level");
-		JPanel panel = new JPanel();
-		
-		popUp.setSize(400, 100); // init code
-		popUp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		popUp.setVisible(true);
-		
-		
-		
-		JTextField name = new JTextField("LevelName", 10);
-		name.addActionListener(this);
-		
-		JButton btn = new JButton("Create Level");
-		btn.addActionListener(new ActionListener() {
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				initFrame(name.getText());
-				popUp.dispose();
-			}
-		});
-
+	public boolean inBounds(int x, int y) { return (x>=0 && x<25) && (y >=0 && y<15);}
+	
+	public void addBlock(int x, int y) {
+		HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
+		blockInfo.put("id", selectedId);
+		blockInfo.put("x", x); 
+		blockInfo.put("y", y);
 		
-		panel.add(name);
-		panel.add(btn);
-		
-		popUp.add(panel);
-		popUp.pack();
+		ArrayList<HashMap<String, Integer>> currentLayout = level.getBlockLayout();
+		currentLayout.add(blockInfo);
+		level.overwriteBlockLayout(currentLayout);
+		level.loadBlocks();
 		
 	}
 	
-	
-	public void initFrame(String levelName) {
-	  	f = new JFrame("Level Editor - Making: " + levelName);
-        level = new Level("level", levelName, 102);
-
-        initPanel();
-    	
-        
-        f.setSize(800, 512); // init code
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.add(this);
-        f.addMouseListener(this);
-        f.setVisible(true);
+	public void addEntity(int x, int y) {
+		System.out.println(selectedId);
+		HashMap<String, Integer> entityInfo = new HashMap<String, Integer>();
+		entityInfo.put("id", selectedId);
+		entityInfo.put("x", x);
+		entityInfo.put("y", y);
+		
+		
+		
+		switch (selectedId) { //For defining special attributes like jump, walk distance, velocity, etc
+			case 0:
+				entityInfo.put("jump", 20);
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+		}
+		ArrayList<HashMap<String, Integer>> currentLayout = level.getEntityLayout();
+		currentLayout.add(entityInfo);
+		level.overwriteEntityLayout(currentLayout);
+		level.loadEntities();
 	}
+	
+	
 }
 
 
@@ -227,4 +298,9 @@ enum MODE{
 	ADD,
 	MODIFY,
 	DELETE
+}
+
+enum TYPE{
+	BLOCK,
+	ENTITY
 }

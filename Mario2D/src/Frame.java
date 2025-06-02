@@ -25,11 +25,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 
 
 //	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
-	private Level level = new LevelLoader().load("src/levels/CoolLevel.json");
+	private Level level = new LevelLoader().load("src/levels/LevelName.json");
 	
 
 	public static int width = 800;//25 tiles
-	public static int height = 512;  
+	public static int height = 512; // 16 tiles
   
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -86,8 +86,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener{
 	
 	public static void main(String[] args) {
 //		 TODO Auto-generated method stub
-//		Frame frame = new Frame();
-		Editor e = new Editor();
+		Frame frame = new Frame();
+//		Editor e = new Editor();
 	}
 	
 	

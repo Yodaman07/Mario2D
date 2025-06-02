@@ -10,7 +10,7 @@ public class Level {
 	private String name;
 	private int id;
 	private ArrayList<HashMap<String, Integer>> blockLayout;
-	private ArrayList<HashMap<String, Integer>> entities;
+	private ArrayList<HashMap<String, Integer>> entityLayout;
 	//pre decode
 	
 	
@@ -30,7 +30,7 @@ public class Level {
 		this.id = id;
 		
 		blockLayout = new ArrayList<HashMap<String, Integer>>();
-		entities = new ArrayList<HashMap<String, Integer>>();
+		entityLayout = new ArrayList<HashMap<String, Integer>>();
 	}//When building the level via editor
 
 	
@@ -69,7 +69,7 @@ public class Level {
 	}
 	
 	public void loadEntities() {
-		for (HashMap<String, Integer> entity : entities) {
+		for (HashMap<String, Integer> entity : entityLayout) {
 			int x = entity.get("x");
 			int y = entity.get("y");
 			
@@ -99,20 +99,17 @@ public class Level {
 	public ArrayList<StaticTexture> getBlocks(){ return blocks;}
 	
 	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) {blockLayout = newLayout;} 
-	//Will OVERWRITE the current block layout - To be used in the editor
-	public ArrayList<HashMap<String, Integer>> getCurrentLayout(){return blockLayout;}
-	
-	public ArrayList<HashMap<String, Integer>> getCurrentEntities(){return entities;}
-	public void overwriteEntities(ArrayList<HashMap<String, Integer>> newEntites) {entities = newEntites;}
+	public ArrayList<HashMap<String, Integer>> getBlockLayout(){return blockLayout;}
+	//Will OVERWRITE the current block and entity layout - To be used in the editor
+	public void overwriteEntityLayout(ArrayList<HashMap<String, Integer>> newEntites) {entityLayout = newEntites;}
+	public ArrayList<HashMap<String, Integer>> getEntityLayout(){return entityLayout;}
 	
 	
 	public String getName() {return this.name;}
-	
-	
 	@Override
 	public String toString() {
 		return "Level [type=" + type + ", name=" + name + ", id=" + id + ", blockLayout=" + blockLayout
-				+ ", entities=" + entities + "]";
+				+ ", entities=" + entityLayout + "]";
 	}
 
 
