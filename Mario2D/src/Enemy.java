@@ -1,10 +1,11 @@
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 public class Enemy {
 	protected int x, y;
 	protected double velocity;
-	
+
 	public Enemy(int x, int y, double v) {
 		this.x = x;
 		this.y = y;
@@ -13,6 +14,11 @@ public class Enemy {
 	
 	public void paint(Graphics g) {}//DO NOT REMOVE - Overridden for each enemy
 	
+	public Rectangle getTopHitbox() {
+		return null;	
+	}
+	
+	public Rectangle getHitbox() { return null;}
 	
 	public void keyPressed(KeyEvent e) {
 		return;

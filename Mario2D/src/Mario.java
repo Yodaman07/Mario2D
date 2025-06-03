@@ -73,6 +73,21 @@ public class Mario{
 	public void setVx(int vx) {this.vx = vx;}
 	public int getVx() {return vx;}
 	
+	
+	
+	
+	public double getAccel() {
+		return accel;
+	}
+
+	public void setAccel(double accel) {
+		this.accel = accel;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
 	
 	public Rectangle getBottomHitbox() {
