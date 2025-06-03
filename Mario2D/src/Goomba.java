@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
@@ -49,6 +50,9 @@ public class Goomba extends Enemy{
 		if (Frame.debugging) {
 			g2.setColor(Color.red);
 			g2.drawRect(x, y, width, height);
+			
+			g2.setColor(Color.green);
+			g2.drawRect(x, y, width, 10);
 		}
 
 	}
@@ -60,7 +64,13 @@ public class Goomba extends Enemy{
 	public void setWidth(int width) {
 		this.width = width;
 	}
-
+	
+	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
+	
+	public Rectangle getTopHitbox() {
+		return new Rectangle(x, y, width, 10);
+	}
+	
 	public int getHeight() {
 		return height;
 	}

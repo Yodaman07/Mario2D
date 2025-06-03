@@ -18,6 +18,7 @@ public class Level {
 	private transient ArrayList<StaticTexture> blocks = new ArrayList<StaticTexture>();
 	private transient ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public transient Mario mario;
+	public transient MarioYoshi mYoshi;
 	public transient Yoshi yoshi;
 	//transient means it won't be serialized
 	
@@ -44,7 +45,10 @@ public class Level {
 		if (mario != null) {
 			mario.paint(g2);	
 		}
-		if (yoshi != null) {
+		if (mYoshi != null && mYoshi.isPlaying()) {
+			mYoshi.paint(g2);
+		}
+		if(yoshi != null) {
 			yoshi.paint(g2);
 		}
 	}
@@ -84,9 +88,12 @@ public class Level {
 					enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), velocity, dist));
 					break;
 				case 2:
-					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), 25);
+					mYoshi = new MarioYoshi(Level.cTp(x, 32), Level.cTp(y, 32), 25);
 					break;
 				case 3:
+					int velocity1 = entity.get("velocity");
+					int dist1 = entity.get("walk_distance");
+					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), velocity1, dist1);
 					break;
 			}
 	
@@ -98,6 +105,8 @@ public class Level {
 	//Blocks MUST be loaded beforehand
 	public ArrayList<StaticTexture> getBlocks(){ return blocks;}
 	
+	public ArrayList<Enemy> getEnemies(){ return enemies;}
+	
 	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) {blockLayout = newLayout;} 
 	//Will OVERWRITE the current block layout - To be used in the editor
 	public ArrayList<HashMap<String, Integer>> getCurrentLayout(){return blockLayout;}
@@ -105,7 +114,43 @@ public class Level {
 	public ArrayList<HashMap<String, Integer>> getCurrentEntities(){return entities;}
 	public void overwriteEntities(ArrayList<HashMap<String, Integer>> newEntites) {entities = newEntites;}
 	
+	public void removeYoshi() {
+		yoshi = null;
+	}
 	
+	public void makeMarYoshi() {
+		mario.setVx(0);
+		mYoshi.setPlaying(true);
+		mYoshi.setX(mario.getX());
+		mYoshi.setY(mario.getY());
+		mYoshi.setAccel(3);
+		yoshi.setX(-100);
+		yoshi.setY(-500);
+		mario.setAccel(0);
+		yoshi.setAccel(0);
+		mario.setX(-100);
+		mario.setY(-500);
+	}
+	
+	public void remakeMario() {
+		mYoshi.setPlaying(false);
+		yoshi.setX(mYoshi.getX());
+		yoshi.setY(mYoshi.getY() - 10);
+		mario.setAccel(3);
+		yoshi.setAccel(3);
+		mario.setX(mYoshi.getX());
+		mario.setY(mYoshi.getY() + 10);
+			
+		mYoshi.setAccel(0);
+		mYoshi.setVx(0);
+		mYoshi.setX(-100);
+		mYoshi.setY(-500);
+		
+		yoshi.setFalling(true);
+		mario.setFalling(false);
+		mario.jump();
+		
+	}
 	
 	@Override
 	public String toString() {

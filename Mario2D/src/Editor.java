@@ -120,8 +120,10 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
         if (event.equals("Save")) {
         	this.hasBeenSaved = true;
         	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
+        	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
         	LevelLoader ll = new LevelLoader();
-        	ll.save("src/levels/newLevel.json", level);
+//        	ll.save("src/levels/newLevel.json", level);
+        	ll.save("Mario2D/src/levels/newLevel.json", level);
         }
     }
 
