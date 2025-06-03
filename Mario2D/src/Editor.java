@@ -13,6 +13,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	
 	private HashMap<String, Integer> blockOptions = new HashMap<String, Integer>();
 	private HashMap<String, Integer> entityOptions = new HashMap<String, Integer>();
+	private ArrayList<HashMap<String, Integer>> entityAttributes = new ArrayList<HashMap<String,Integer>>();
 	
 	private int selectedId = 0; //NULL
 	private TYPE selectedType; //BLOCK or ENTITY
@@ -28,9 +29,9 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
     
     
     public Editor(){
+    	
     	this.configOptions();
         this.promptCreation();
-        
         
         System.out.println("Initialized");
     }
@@ -43,6 +44,9 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
     	entityOptions.put("Mario", 0);
     	entityOptions.put("Goomba", 1);
     	entityOptions.put("Yoshi", 2);
+    	
+    	entityAttributes.add(0, new HashMap<>(Map.of("jump", 0))); //mario
+    	entityAttributes.add(1, new HashMap<>(Map.of("velocity", 0, "walk_distance", 0))); //goomba
     }
     
     public void initPanel(){
@@ -105,6 +109,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void promptCreation(){
+
 		JFrame popUp = new JFrame("Create a New Level");
 		JPanel panel = new JPanel();
 		
@@ -112,10 +117,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		popUp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		popUp.setVisible(true);
 		
-		
-		
 		JTextField name = new JTextField("LevelName", 10);
-		name.addActionListener(this);
 		
 		JButton btn = new JButton("Create Level");
 		btn.addActionListener(new ActionListener() {
@@ -128,7 +130,6 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 			}
 		});
 
-		
 		panel.add(name);
 		panel.add(btn);
 		
@@ -138,6 +139,67 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	}
 
     
+	public void initAttributePrompt(int id, int x, int y) { //will prompt entity info and spawn the entity after
+		JFrame popUp = new JFrame("Fill out entity attributes");
+		JPanel panel = new JPanel();
+		
+		popUp.setSize(400, 100); // init code
+		popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		popUp.setVisible(true);
+		
+		ArrayList<JTextField> inputReferences = new ArrayList<JTextField>();
+		//keep track of the input objects (they are in a for loop so you can't access all immediately)
+		
+	
+		entityAttributes.get(id).forEach((String val_name, Integer val) -> {
+			JLabel attribute = new JLabel(val_name);
+			JTextField value = new JTextField("value", 10);
+			inputReferences.add(value);
+			
+			panel.add(attribute);
+			panel.add(value);
+		});
+		
+		
+		JButton btn = new JButton("Submit");
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				f.repaint();
+				repaint();
+				Object[] keyArray = entityAttributes.get(id).keySet().toArray();
+				
+				for (int i = 0; i < keyArray.length; i++) {
+					try {
+						int value = Integer.valueOf(inputReferences.get(i).getText());
+						entityAttributes.get(id).put(keyArray[i].toString(), value);
+						System.out.println(entityAttributes);
+						System.out.println("Information added");
+						popUp.dispose();
+					}catch (NumberFormatException exception) {
+						System.out.println("NOT A VALID VALUE");
+					}
+				}
+				//end of for loop
+				
+				addEntity(x, y);
+				
+				
+				
+				
+		    	
+			}
+		});
+		
+		
+		
+		panel.add(btn);
+		popUp.add(panel);
+		popUp.pack();
+		
+		
+	}
+	
     @Override
     public void paint(Graphics g) {
         super.paintComponent(g);  
@@ -178,7 +240,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
            		   mode = MODE.ADD;
            		   selectedId = id;
            	   }
-              });
+             });
         }
         
         
@@ -188,16 +250,16 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
         
         if (event.equals("Save")) {
         	this.hasBeenSaved = true;
-//        	level.getCurrentEntities().add(new HashMap<>(Map.of("x",100, "y",100, "id", 0, "jump", 20)));
         	LevelLoader ll = new LevelLoader();
-        	
         	ll.save("src/levels/" + level.getName() + ".json", level);
         }
     }
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) { //mouse press
 		Point p = MouseInfo.getPointerInfo().getLocation();
+		System.out.println(p);
+		System.out.println(e.getLocationOnScreen());
 		
 		int x = Level.pTc(p.x, 32);
 		int y = Level.pTc(p.y, 32) - 2;
@@ -206,7 +268,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		
 		if (mode.equals(MODE.ADD)) {
 			if (selectedType == TYPE.BLOCK) {this.addBlock(x, y);}
-			else if (selectedType == TYPE.ENTITY) {this.addEntity(x, y);}
+			else if (selectedType == TYPE.ENTITY) {initAttributePrompt(selectedId, x, y);}
 			
 		}else if (mode.equals(MODE.DELETE)) {
 			System.out.println("Delete at x: " + (x) + " and y: " + (y) ); //relative to the editor screen (not sidebars)
@@ -274,20 +336,16 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		entityInfo.put("y", y);
 		
 		
-		
-		switch (selectedId) { //For defining special attributes like jump, walk distance, velocity, etc
-			case 0:
-				entityInfo.put("jump", 20);
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-		}
+		//For defining special attributes like jump, walk distance, velocity, etc
+		entityAttributes.get(selectedId).forEach((String name, Integer value) ->{
+			entityInfo.put(name, value);
+		});
+		System.out.println(entityInfo);
 		ArrayList<HashMap<String, Integer>> currentLayout = level.getEntityLayout();
 		currentLayout.add(entityInfo);
 		level.overwriteEntityLayout(currentLayout);
 		level.loadEntities();
+		
 	}
 	
 	
