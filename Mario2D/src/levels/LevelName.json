@@ -1,1 +1,1 @@
-{"type":"level","name":"LevelName","id":102,"blockLayout":[],"entityLayout":[{"x":10,"y":11,"id":0,"jump":0}]}
+{"type":"level","name":"LevelName","id":102,"blockLayout":[{"x":9,"y":12,"id":2},{"x":11,"y":13,"id":2},{"x":11,"y":14,"id":2},{"x":14,"y":13,"id":2}],"entityLayout":[]}

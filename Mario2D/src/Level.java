@@ -105,38 +105,17 @@ public class Level {
 
 	// TODO: ADD ERROR THROWING
 	// Blocks MUST be loaded beforehand
-	public ArrayList<StaticTexture> getBlocks() {
-		return blocks;
-	}
+	public ArrayList<StaticTexture> getBlocks() {return blocks;}
 
-	public ArrayList<Enemy> getEnemies() {
-		return enemies;
-	}
+	public ArrayList<Enemy> getEnemies() {return enemies;}
 
-	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) {
-		blockLayout = newLayout;
-	}
-
-	public ArrayList<HashMap<String, Integer>> getBlockLayout() {
-		return blockLayout;
-	}
+	public void overwriteBlockLayout(ArrayList<HashMap<String, Integer>> newLayout) {blockLayout = newLayout;}
+	public ArrayList<HashMap<String, Integer>> getBlockLayout() {return blockLayout;}
 
 	// Will OVERWRITE the current block and entity layout - To be used in the editor
-	public void overwriteEntityLayout(ArrayList<HashMap<String, Integer>> newEntites) {
-		entityLayout = newEntites;
-	}
+	public void overwriteEntityLayout(ArrayList<HashMap<String, Integer>> newEntites) {entityLayout = newEntites;}
 
-	public ArrayList<HashMap<String, Integer>> getEntityLayout() {
-		return entityLayout;
-	}
-
-	public void overwriteEntities(ArrayList<HashMap<String, Integer>> newEntites) {
-		entities = newEntites;
-	}
-
-	public void removeYoshi() {
-		yoshi = null;
-	}
+	public ArrayList<HashMap<String, Integer>> getEntityLayout() {return entityLayout;}
 
 	public void makeMarYoshi() {
 		mario.setVx(0);
