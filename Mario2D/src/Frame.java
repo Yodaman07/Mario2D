@@ -22,8 +22,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	// private Goomba goomba = new Goomba(100, height/2, 2, 100);
 	// private Mario mario = new Mario(500, height/2, 100);
 
-	 private Level level = new LevelLoader().load("src/levels/testing.json");
-	// private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+//	 private Level level = new LevelLoader().load("src/levels/testing.json");
+	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 	public static int width = 800;// 25 tiles
 	public static int height = 512; // 16 tiles
@@ -79,13 +79,34 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		});
 
 		for (int i = 0; i < level.getEnemies().size(); i++) {
-			if (level.mario.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox())
-					&& level.mario.isFalling()) {
+			if (level.mario.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox()) && level.mario.isFalling()) {
 				level.getEnemies().remove(i);
 				i--;
 				level.mario.setFalling(false);
 				level.mario.jump();
 			}
+			
+			if(level.mario.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
+				level.mario.setX(level.mario.getX() - 15);
+				System.out.println("Damage");
+			}
+			
+			if(level.mario.getLeftHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
+				level.mario.setX(level.mario.getX() + 15);
+				System.out.println("Damage");
+			}
+			
+			if(level.mYoshi.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
+				level.mYoshi.setX(level.mYoshi.getX() - 15);
+				System.out.println("Damage");
+			}
+			
+			if(level.mYoshi.getLeftHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
+				level.mYoshi.setX(level.mYoshi.getX() + 15);
+				System.out.println("Damage");
+			}
+			
+			
 
 		}
 
@@ -120,7 +141,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Frame frame = new Frame();
-//		 Editor e = new Editor();
+//		Editor e = new Editor();
 	}
 
 	public Frame() {

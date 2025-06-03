@@ -28,12 +28,12 @@ public class Yoshi extends Enemy{
 	
 	public Yoshi(int x, int y, double v, int d) {
 		super(x, y, v);
-		this.width = (int) (32*scaleWidth);
-		this.height = (int) (50*scaleHeight);
+		this.width = (int) (54*scaleWidth);
+		this.height = (int) (58*scaleHeight);
 		walkDistance = d;
 		
-		forward = getImage("/imgs/Short Pipe.png");
-		backward = getImage("/imgs/Short Pipe.png");
+		forward = getImage("/imgs/Reg_Yoshi.png");
+		backward = getImage("/imgs/Reg_Yoshi.png");
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
 	}

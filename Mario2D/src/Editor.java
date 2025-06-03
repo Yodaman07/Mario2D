@@ -245,7 +245,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		System.out.println(e.getLocationOnScreen());
 
 		int x = Level.pTc(p.x, 32);
-		int y = Level.pTc(p.y, 32) - 2;
+		int y = Level.pTc(p.y, 32) - 1;
 		if (!inBounds(x, y)) {
 			return;
 		}
