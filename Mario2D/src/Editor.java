@@ -40,10 +40,13 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 		entityOptions.put("Mario", 0);
 		entityOptions.put("Goomba", 1);
-		entityOptions.put("Yoshi", 2);
+		entityOptions.put("Yoshi", 3);
 
 		entityAttributes.add(0, new HashMap<>(Map.of("jump", 0))); // mario
 		entityAttributes.add(1, new HashMap<>(Map.of("velocity", 0, "walk_distance", 0))); // goomba
+		entityAttributes.add(2, new HashMap<String, Integer>()); //MARIO YOSHI (but he isn't used)
+		entityAttributes.add(3, new HashMap<>(Map.of("velocity", 0, "walk_distance", 0))); // yoshi
+		
 	}
 
 	public void initPanel() {
@@ -234,6 +237,10 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		if (event.equals("Save")) {
 			this.hasBeenSaved = true;
 			LevelLoader ll = new LevelLoader();
+			ArrayList<HashMap<String, Integer>> layout = level.getEntityLayout();
+			layout.add(new HashMap<>(Map.of("x", 100, "y", 100, "id", 2)));
+			level.overwriteEntityLayout(layout);
+			
 			ll.save("src/levels/" + level.getName() + ".json", level);
 		}
 	}
@@ -245,10 +252,8 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		System.out.println(e.getLocationOnScreen());
 
 		int x = Level.pTc(p.x, 32);
-		int y = Level.pTc(p.y, 32) - 1;
-		if (!inBounds(x, y)) {
-			return;
-		}
+		int y = Level.pTc(p.y, 32) - 2;
+		if (!inBounds(x, y)) {return;}
 
 		if (mode.equals(MODE.ADD)) {
 			if (selectedType == TYPE.BLOCK) {

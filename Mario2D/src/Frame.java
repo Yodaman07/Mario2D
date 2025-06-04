@@ -22,17 +22,28 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	// private Goomba goomba = new Goomba(100, height/2, 2, 100);
 	// private Mario mario = new Mario(500, height/2, 100);
 
-//	 private Level level = new LevelLoader().load("src/levels/testing.json");
-	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+	 private int cameraX;
+	 
+	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
+//	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+
 
 	public static int width = 800;// 25 tiles
 	public static int height = 512; // 16 tiles
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-
-		// g.setColor(Color.black);//tile size is 32x32
+		
+		if (level.pTc(level.mario.getX(), 32) >= 22) {
+			System.out.println("AAA");
+//			super.setLocation(-200, 0);
+			cameraX = -100;
+		}else {cameraX = 0;}
+		g.translate(cameraX, 0);
+		
 		level.paint(g);
+		// g.setColor(Color.black);//tile size is 32x32
+		
 		if (level.mario != null) {
 			level.mario.setBottomCollison(false);
 		}
@@ -155,8 +166,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		Timer t = new Timer(16, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-
+		f.setVisible(true);		
 	}
 
 	@Override
