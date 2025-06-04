@@ -26,7 +26,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	 private int marioStartingX;
 	 
 //	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
-//	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 
 	public static int width = 800;// 25 tiles
@@ -35,10 +35,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
-		if (level.mario.getX() > marioStartingX && !level.mYoshi.isPlaying()) {
-			cameraX = -marioStartingX+ level.mario.getX();
-		}else if (level.mYoshi.getX() > marioStartingX && level.mYoshi.isPlaying()) {
-			cameraX = -marioStartingX+ level.mYoshi.getX();
+		if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
+			cameraX = -350+ level.mario.getX();
+		}else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
+			cameraX = -350+ level.mYoshi.getX();
 		}
 	
 		
@@ -57,6 +57,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		}
 		if (level.yoshi != null) {
 			level.yoshi.setBottomCollison(false);
+		}
+		
+		//End game, winner
+		if(level.mario.getHitbox().intersects(level.flag.getHitbox())) {
+			System.out.println("Winner");
 		}
 		
 		for(int i = 0; i < level.getBlocks().size(); i++) {
@@ -113,7 +118,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 			}
 
 		});
-
+		
 		for (int i = 0; i < level.getEnemies().size(); i++) {
 			if (level.mario.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox()) && level.mario.isFalling()) {
 				level.getEnemies().remove(i);
@@ -123,6 +128,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				break;
 			}
 			
+			//End game, lost
 			if(level.mario.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mario.setX(level.mario.getX() - 15);
 				System.out.println("Damage");

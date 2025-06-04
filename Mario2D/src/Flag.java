@@ -21,9 +21,9 @@ public class Flag {
 	public Flag(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.width = (int) (32*scaleWidth);
-		this.height = (int) (32*scaleHeight); 
-		image = getImage("");
+		this.width = (int) (64*scaleWidth);
+		this.height = (int) (224*scaleHeight); 
+		image = getImage("/imgs/FLAG.png");
 		tx = AffineTransform.getTranslateInstance(0, 0);
 	}
 	

@@ -83,6 +83,7 @@ public class Level {
 		mario = null;
 		yoshi = null;
 		mYoshi = null;
+		flag = null;
 		for (HashMap<String, Integer> entity : entityLayout) {
 			int x = entity.get("x");
 			int y = entity.get("y");

@@ -89,7 +89,8 @@
 		    "y": 11,
 			"velocity": 2,
 			"walk_distance": 20
-	   }{
+	   },
+	   {
 			"id": 4,
 			"x": 2,
 			"y": 5
