@@ -19,10 +19,12 @@ public class StaticTexture{
 	private double scaleWidth = 1;		//change to scale image
 	private double scaleHeight = 1; 		//change to scale image
 	private boolean dangerous = false;
-
+	
+	private String path;
+	
 	public StaticTexture(String path) {
 		super();
-		
+		this.path = path;
 		forward 	= getImage(path); //load the image
 
 		width = (int) (32*scaleWidth); // All static textures are 32x32
@@ -67,8 +69,14 @@ public class StaticTexture{
 		this.y = y;
 	}
 
-
+	public String getPath() {
+		return path;
+	}
+	
 	public Rectangle getHitbox() { return new Rectangle(x, y, width, height); }
+	public Rectangle getBottomHitbox() {
+		return new Rectangle(x+width/4, y+height, width/2, 1);
+	}
 	public int getY() {return y;}
 	public int getX() {return x;}
 	public boolean isDangerous() {return dangerous;}

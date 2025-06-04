@@ -24,7 +24,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	 private int cameraX;
 	 
-	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
+//	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
 //	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 
@@ -53,6 +53,21 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		if (level.yoshi != null) {
 			level.yoshi.setBottomCollison(false);
 		}
+		
+		for(int i = 0; i < level.getBlocks().size(); i++) {
+			if(level.mario.getTopHitbox().intersects(level.getBlocks().get(i).getBottomHitbox()) && level.mario.isJumping() && level.getBlocks().get(i).getPath().equals("/imgs/Orange_Brick.png")) {
+				level.getBlocks().remove(i);
+				i--;
+				level.mario.fall();
+			}
+			
+			if(level.mYoshi.getTopHitbox().intersects(level.getBlocks().get(i).getBottomHitbox()) && level.mYoshi.isJumping() && level.getBlocks().get(i).getPath().equals("/imgs/Orange_Brick.png")) {
+				level.getBlocks().remove(i);
+				i--;
+				level.mYoshi.fall();
+			}
+		}
+		
 		level.getBlocks().forEach((block) -> { // Collision
 
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
@@ -79,6 +94,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				level.yoshi.setBottomCollison(true);
 				level.yoshi.setY(block.getY() - level.yoshi.getHeight()); // AI assisted help for repositioning
 			}
+			
+			if (level.mYoshi.getTopHitbox().intersects(block.getHitbox())) {
+				level.mYoshi.setJumping(false);
+				level.mYoshi.setFalling(true);
+			}
 
 			if (level.mYoshi.getBottomHitbox().intersects(block.getHitbox())) {
 
@@ -95,6 +115,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				i--;
 				level.mario.setFalling(false);
 				level.mario.jump();
+				break;
 			}
 			
 			if(level.mario.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
@@ -117,10 +138,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				System.out.println("Damage");
 			}
 			
-			
-
 		}
-
+		
+		
+		
 		if (level.mario.getBottomHitbox().intersects(level.yoshi.getTopHitbox()) && level.mario.isFalling()) {
 			level.makeMarYoshi();
 		}

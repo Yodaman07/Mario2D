@@ -19,6 +19,7 @@ public class Level {
 	public transient Mario mario;
 	public transient MarioYoshi mYoshi;
 	public transient Yoshi yoshi;
+	public transient Flag flag;
 	// transient means it won't be serialized
 
 	public Level() {
@@ -52,6 +53,9 @@ public class Level {
 		}
 		if (yoshi != null) {
 			yoshi.paint(g2);
+		}
+		if(flag != null) {
+			flag.paint(g2);
 		}
 	}
 
@@ -89,13 +93,16 @@ public class Level {
 					int dist = entity.get("walk_distance");
 					enemies.add(new Goomba(Level.cTp(x, 32), Level.cTp(y, 32), velocity, dist));
 					break;
-				case 2:
+				case 2: 
 					mYoshi = new MarioYoshi(Level.cTp(x, 32), Level.cTp(y, 32), 25);
 					break;
 				case 3:
 					int velocity1 = entity.get("velocity");
 					int dist1 = entity.get("walk_distance");
 					yoshi = new Yoshi(Level.cTp(x, 32), Level.cTp(y, 32), velocity1, dist1);
+					break;
+				case 4:
+					flag = new Flag(Level.cTp(x, 32), Level.cTp(y, 32));
 					break;
 			}
 
@@ -125,6 +132,7 @@ public class Level {
 		mYoshi.setAccel(3);
 		yoshi.setX(-100);
 		yoshi.setY(-500);
+		mario.setJump(0);
 		mario.setAccel(0);
 		yoshi.setAccel(0);
 		mario.setX(-100);
@@ -141,6 +149,7 @@ public class Level {
 		mario.setY(mYoshi.getY() + 10);
 
 		mYoshi.setAccel(0);
+		mYoshi.setJump(0);
 		mYoshi.setVx(0);
 		mYoshi.setX(-100);
 		mYoshi.setY(-500);

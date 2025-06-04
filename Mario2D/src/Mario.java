@@ -83,6 +83,14 @@ public class Mario{
 	public void setAccel(double accel) {
 		this.accel = accel;
 	}
+	
+	public double getJump() {
+		return jump;
+	}
+
+	public void setJump(double jump) {
+		this.jump = jump;
+	}
 
 	public int getY() {
 		return y;
@@ -95,7 +103,7 @@ public class Mario{
 	}
 	
 	public Rectangle getTopHitbox() {
-		return new Rectangle(x+width/4, y, width/2, 1);
+		return new Rectangle(x+width/4, y, width/2, 10);
 	}
 	
 	public Rectangle getRightHitbox() {
@@ -157,7 +165,7 @@ public class Mario{
 		
 			//Top hitbox
 			g2.setColor(Color.orange);
-			g2.drawRect(x+width/4, y, width/2, 1);
+			g2.drawRect(x, y, width, 10);
 			
 			//Right Hitbox
 			g2.setColor(Color.blue);

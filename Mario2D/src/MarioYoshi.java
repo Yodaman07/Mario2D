@@ -156,7 +156,9 @@ public class MarioYoshi {
 	public Rectangle getLeftHitbox() {
 		return new Rectangle(x, y+(height/8), 1, (3*height/4));
 	}
-	
+	public Rectangle getTopHitbox() {
+		return new Rectangle(x+width/4, y, width/2, 10);
+	}
 	public boolean isFalling() {return isFalling;}
 	public void setFalling(boolean isFalling) {this.isFalling = isFalling;}
 	
