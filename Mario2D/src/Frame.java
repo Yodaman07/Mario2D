@@ -17,14 +17,15 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener {
 
-	public static boolean debugging = true;
+	public static boolean debugging = false;
 
 	// private Goomba goomba = new Goomba(100, height/2, 2, 100);
 	// private Mario mario = new Mario(500, height/2, 100);
 
 	 private int cameraX;
+	 private int marioStartingX;
 	 
-	 private Level level = new LevelLoader().load("src/levels/LevelName.json");
+	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
 //	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 
@@ -34,12 +35,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
-		if (level.pTc(level.mario.getX(), 32) >= 22) {
-			System.out.println("AAA");
-//			super.setLocation(-200, 0);
-			cameraX = -100;
-		}else {cameraX = 0;}
-		g.translate(cameraX, 0);
+		if (level.mario.getX() > marioStartingX && !level.mYoshi.isPlaying()) {
+			cameraX = -marioStartingX+ level.mario.getX();
+		}else if (level.mYoshi.getX() > marioStartingX && level.mYoshi.isPlaying()) {
+			cameraX = -marioStartingX+ level.mYoshi.getX();
+		}
+	
+		
+		
+		
+		g.translate(-cameraX, 0);
 		
 		level.paint(g);
 		// g.setColor(Color.black);//tile size is 32x32
@@ -151,8 +156,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		Frame frame = new Frame();
-		Editor e = new Editor();
+		Frame frame = new Frame();
+//		Editor e = new Editor();
 	}
 
 	public Frame() {
@@ -166,7 +171,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		Timer t = new Timer(16, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);		
+		f.setVisible(true);
+		
+		
+		marioStartingX = level.mario.getStartingX();
 	}
 
 	@Override
@@ -178,7 +186,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getKeyCode());
+//		System.out.println(e.getKeyCode());
 		Mario m = level.mario;
 		MarioYoshi y = level.mYoshi;
 		switch (e.getKeyCode()) {
@@ -214,6 +222,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				break;
 			case (16): // shift
 				System.out.println("crouch");
+				break;
 		}
 	}
 

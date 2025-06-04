@@ -16,7 +16,7 @@ public class Mario{
 	private double size;
 	private double jump;
 	private double maxJumpV;
-	private Image forward, backward, crouch, jumping;
+	private Image forward, backward, crouch, jumping_left, jumping_right;
 	private AffineTransform tx;
 	
 	private double scaleWidth = 1;		//change to scale image
@@ -31,11 +31,11 @@ public class Mario{
 	
 	private double accel = 3;
 	private double dt = 0.5;
-	
+	private int startingX;
 
 	public Mario(int x, int y, double jump){
 		
-
+		this.startingX = x;
 		this.x = x;
 		this.y = y;
 		this.width = (int) (32*scaleWidth);
@@ -47,7 +47,8 @@ public class Mario{
 
 		forward = getImage("/imgs/Mario_Right.png");
 		backward = getImage("/imgs/Mario_Left.png");
-		jumping = getImage("/imgs/Mario_Jump.png");
+		jumping_right = getImage("/imgs/Mario_Jump_Right.png");
+		jumping_left = getImage("/imgs/Mario_Jump_Left.png");
 		
 		tx = AffineTransform.getTranslateInstance(0,0);
 		init(x,y);
@@ -113,7 +114,11 @@ public class Mario{
 		init(x, y);
 		
 		if(isJumping) {
-			g2.drawImage(jumping, tx, null);
+			if (vx < 0) {
+				g2.drawImage(jumping_left, tx, null);
+			}else {
+				g2.drawImage(jumping_right, tx, null);
+			}
 		}else if(vx > 0) {
 			g2.drawImage(forward, tx, null);
 		}else if(vx < 0) {
@@ -193,6 +198,8 @@ public class Mario{
 	public int getX() {return x;}
 	public int getHeight() {return height;}
 	public int getWidth() {return width;}
+	
+	public int getStartingX() {return startingX;}
 
 	
 	public boolean isFalling() {return isFalling;}
