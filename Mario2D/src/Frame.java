@@ -24,7 +24,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	 private int cameraX;
 	 
-	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
+	 private Level level = new LevelLoader().load("src/levels/LevelName.json");
 //	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 
@@ -151,8 +151,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Frame frame = new Frame();
-//		Editor e = new Editor();
+//		Frame frame = new Frame();
+		Editor e = new Editor();
 	}
 
 	public Frame() {

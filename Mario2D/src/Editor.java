@@ -229,16 +229,14 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 			});
 		}
 
-		if (event.equals("Delete")) { // NOTE: Add, delete, and save are protected and can't be the name of any block
-										// or entity
-			mode = MODE.DELETE;
-		}
+		// NOTE: Add, delete, and save are protected and can't be the name of any block or entity
+		if (event.equals("Delete")) { mode = MODE.DELETE;}
 
 		if (event.equals("Save")) {
 			this.hasBeenSaved = true;
 			LevelLoader ll = new LevelLoader();
 			ArrayList<HashMap<String, Integer>> layout = level.getEntityLayout();
-			layout.add(new HashMap<>(Map.of("x", 100, "y", 100, "id", 2)));
+			layout.add(new HashMap<>(Map.of("x", 100, "y", 100, "id", 2))); //Force place a mario yoshi off screen
 			level.overwriteEntityLayout(layout);
 			
 			ll.save("src/levels/" + level.getName() + ".json", level);
@@ -256,26 +254,11 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		if (!inBounds(x, y)) {return;}
 
 		if (mode.equals(MODE.ADD)) {
-			if (selectedType == TYPE.BLOCK) {
-				this.addBlock(x, y);
-			} else if (selectedType == TYPE.ENTITY) {
-				initAttributePrompt(selectedId, x, y);
-			}
+			if (selectedType == TYPE.BLOCK) {this.addBlock(x, y);} 
+			else if (selectedType == TYPE.ENTITY) {initAttributePrompt(selectedId, x, y);}
 
 		} else if (mode.equals(MODE.DELETE)) {
-			System.out.println("Delete at x: " + (x) + " and y: " + (y)); // relative to the editor screen (not
-																			// sidebars)
-			ArrayList<HashMap<String, Integer>> currentLayout = level.getBlockLayout();
-
-			int index = getIndexToRemove(currentLayout, x, y);
-			if (index != -1) {
-				System.out.println(currentLayout);
-				currentLayout.remove(index);
-				System.out.println(currentLayout);
-			}
-
-			level.overwriteBlockLayout(currentLayout);
-			level.loadBlocks();
+			this.removeBlockOrEntity(x, y);;
 		}
 
 		f.repaint();
@@ -346,7 +329,30 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		level.loadEntities();
 
 	}
-
+	
+	public void removeBlockOrEntity(int x, int y) { //checking to remove blocks or entity
+		//If entity and blocks overlap, will remove the block first
+		ArrayList<HashMap<String, Integer>> blockLayout = level.getBlockLayout();
+		
+		
+		int index = getIndexToRemove(blockLayout, x, y);
+		if (index != -1) {
+			blockLayout.remove(index);
+			level.overwriteBlockLayout(blockLayout);
+			level.loadBlocks();
+			return;
+		}
+		
+		ArrayList<HashMap<String, Integer>> entityLayout = level.getEntityLayout();
+		index = getIndexToRemove(entityLayout, x, y);
+		if (index != -1) {
+			entityLayout.remove(index);
+			level.overwriteEntityLayout(entityLayout);
+			level.loadEntities();
+			return;
+		}
+		
+	}
 }
 
 enum MODE {
