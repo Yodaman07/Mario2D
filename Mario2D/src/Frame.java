@@ -21,13 +21,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public static boolean debugging = true;
 	public static SCREEN currentScreen = SCREEN.MENU;
 	public static Level level = new LevelLoader().load("src/levels/testing.json");
+	public static boolean gameOver = false;
 	// private static Level level = new
 	// LevelLoader().load("Mario2D/src/levels/testing.json");
 
 	private int cameraX;
 	private int marioStartingX;
 	private boolean mainMenu = false;
-	private boolean gameOver = false;
+	
 	private EndScreen endScreen = new EndScreen(0, 0, false);
 
 	private MainMenu mm = new MainMenu();
@@ -40,13 +41,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 
 		// sets camera view on mario
-		if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
-			cameraX = -350 + level.mario.getX();
-		} else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
-			cameraX = -350 + level.mYoshi.getX();
+		if (!gameOver) {
+			if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
+				cameraX = -350 + level.mario.getX();
+			} else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
+				cameraX = -350 + level.mYoshi.getX();
+			}
 		}
 
-		g.translate(-cameraX, 0);
 
 		if (currentScreen == SCREEN.MENU) {
 			mm.paint(g);
@@ -55,16 +57,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		} else if (currentScreen == SCREEN.GAME) {
 			// paints level, main menu, and end screen
 			if (gameOver) {
+				cameraX = 0;
 				endScreen.paint(g);
-				if (mainMenu) {
-					CurrentScreen = SCREEN.MENU;
-					mainMenu = false;
-					System.out.println("End it");
-				}
 			} else {
 				level.paint(g);
 			}
 		}
+		g.translate(-cameraX, 0);
+
 
 		// g.setColor(Color.black);//tile size is 32x32
 
@@ -251,7 +251,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		// System.out.println(e.getKeyCode());
+		 System.out.println(e.getKeyCode());
 		Mario m = level.mario;
 		MarioYoshi y = level.mYoshi;
 		if (!gameOver) {
@@ -286,10 +286,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 						level.remakeMario();
 					}
 					break;
+			}
+		}else {
+			
+			switch (e.getKeyCode()) {
 				case (82): // back to main menu
 					System.out.println("Return to Main Menu");
 					if (gameOver) {
-						mainMenu = true;
+						currentScreen = SCREEN.MENU;
 					}
 					break;
 			}

@@ -51,6 +51,7 @@ public class MainMenu extends JPanel{
 						
 						//Load a new level, and then paint it by switching the current screen
 						Frame.level = new LevelLoader().load("src/levels/" + LevelSelect.levelPaths.get(i));
+						Frame.gameOver = false;
 						Frame.currentScreen = SCREEN.GAME;
 					}
 				}
