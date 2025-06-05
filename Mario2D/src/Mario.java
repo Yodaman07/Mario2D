@@ -53,68 +53,8 @@ public class Mario{
 		tx = AffineTransform.getTranslateInstance(0,0);
 		init(x,y);
 		
-		
-		
 	}
 	
-	public void jump() {
-		if(isJumping || isFalling) {
-			return;
-		}
-		isJumping = true;
-		jump = maxJumpV;
-	}
-	
-	public void fall() {
-		isFalling = true;
-		isJumping = false;
-		jump = 0;
-	}
-
-	public void setVx(int vx) {this.vx = vx;}
-	public int getVx() {return vx;}
-	
-	
-	
-	
-	public double getAccel() {
-		return accel;
-	}
-
-	public void setAccel(double accel) {
-		this.accel = accel;
-	}
-	
-	public double getJump() {
-		return jump;
-	}
-
-	public void setJump(double jump) {
-		this.jump = jump;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
-	
-	public Rectangle getBottomHitbox() {
-		return new Rectangle(x+width/4, y+height, width/2, 1);
-	}
-	
-	public Rectangle getTopHitbox() {
-		return new Rectangle(x+width/4, y, width/2, 10);
-	}
-	
-	public Rectangle getRightHitbox() {
-		return new Rectangle(x+width, y+(height/8), 1, (3*height/4));
-	}
-	
-	public Rectangle getLeftHitbox() {
-		return new Rectangle(x, y+(height/8), 1, (3*height/4));
-	}
-
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		
@@ -182,22 +122,60 @@ public class Mario{
 		}
 	}
 	
-	
-
-	private Image getImage(String path) {
-		Image tempImage = null;
-		try {
-			URL imageURL = Mario.class.getResource(path);
-			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void jump() {
+		if(isJumping || isFalling) {
+			return;
 		}
-		return tempImage;
+		isJumping = true;
+		jump = maxJumpV;
 	}
 	
-	private void init(int a, int b) {
-		tx.setToTranslation(a, b);
-		tx.scale(scaleWidth, scaleHeight);
+	public void fall() {
+		isFalling = true;
+		isJumping = false;
+		jump = 0;
+	}
+
+	public void setVx(int vx) {this.vx = vx;}
+	
+	public int getVx() {return vx;}
+	
+	public double getAccel() {
+		return accel;
+	}
+
+	public void setAccel(double accel) {
+		this.accel = accel;
+	}
+	
+	public double getJump() {
+		return jump;
+	}
+
+	public void setJump(double jump) {
+		this.jump = jump;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public Rectangle getHitbox() { return new Rectangle(x, y, width, height);}
+	
+	public Rectangle getBottomHitbox() {
+		return new Rectangle(x+width/4, y+height, width/2, 1);
+	}
+	
+	public Rectangle getTopHitbox() {
+		return new Rectangle(x+width/4, y, width/2, 10);
+	}
+	
+	public Rectangle getRightHitbox() {
+		return new Rectangle(x+width, y+(height/8), 1, (3*height/4));
+	}
+	
+	public Rectangle getLeftHitbox() {
+		return new Rectangle(x, y+(height/8), 1, (3*height/4));
 	}
 	
 	public void setX(int x) {this.x = x;}
@@ -218,6 +196,24 @@ public class Mario{
 	
 	public boolean isBottomCollison() {return bottomCollison;}
 	public void setBottomCollison(boolean bottomCollison) {this.bottomCollison = bottomCollison;}
+	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Mario.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
+	}
+	
+	private void init(int a, int b) {
+		tx.setToTranslation(a, b);
+		tx.scale(scaleWidth, scaleHeight);
+	}
+	
+	
 	
 	
 	

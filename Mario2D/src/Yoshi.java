@@ -122,23 +122,7 @@ public class Yoshi extends Enemy{
 	public void setHeight(int height) {
 		this.height = height;
 	}
-
-	private Image getImage(String path) {
-		Image tempImage = null;
-		try {
-			URL imageURL = Goomba.class.getResource(path);
-			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return tempImage;
-	}
 	
-	private void init(int a, int b) {
-		tx.setToTranslation(a, b);
-		tx.scale(scaleWidth, scaleHeight);
-	}
-
 	public int getWalked() {
 		return walked;
 	}
@@ -153,6 +137,22 @@ public class Yoshi extends Enemy{
 
 	public void setWalkDistance(int walkDistance) {
 		this.walkDistance = walkDistance;
+	}
+	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Goomba.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
+	}
+	
+	private void init(int a, int b) {
+		tx.setToTranslation(a, b);
+		tx.scale(scaleWidth, scaleHeight);
 	}
 	
 	
