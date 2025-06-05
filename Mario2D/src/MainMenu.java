@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.security.Key;
+import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -29,13 +30,32 @@ public class MainMenu extends JPanel{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			
-			Point p = e.getPoint();
-			
-			//Buttons are both 100x50
-			if (new Rectangle(levelRect.width, levelRect.height, 100, 50).contains(p)) {
-				System.out.println("Level");
-			}else if (new Rectangle(editorRect.width, editorRect.height, 100, 50).contains(p)) {
-				Editor editor = new Editor();
+			if (Frame.currentScreen == SCREEN.MENU) {
+				Point p = e.getPoint();
+				
+				//Buttons are both 100x50
+				if (new Rectangle(levelRect.width, levelRect.height, 100, 50).contains(p)) {
+					Frame.currentScreen = SCREEN.LEVEL_SELECT;
+				}else if (new Rectangle(editorRect.width, editorRect.height, 100, 50).contains(p)) {
+					Editor editor = new Editor();
+				}
+			}else if (Frame.currentScreen == SCREEN.LEVEL_SELECT) {
+				
+				
+				Point p = e.getPoint();
+				
+				for (int i = 0; i< LevelSelect.levelPaths.size(); i++) {
+					Point btnPoint = LevelSelect.levelRects.get(i);
+					if (new Rectangle(btnPoint.x, btnPoint.y, 100, 50).contains(p)) {
+						//Play the selected level
+						
+						//Load a new level, and then paint it by switching the current screen
+						Frame.level = new LevelLoader().load("src/levels/" + LevelSelect.levelPaths.get(i));
+						Frame.currentScreen = SCREEN.GAME;
+					}
+				}
+				
+				
 			}
 
 		}

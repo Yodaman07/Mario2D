@@ -19,13 +19,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	public static boolean debugging = true;
 	public static SCREEN currentScreen = SCREEN.MENU;
-
+	public static Level level = new LevelLoader().load("src/levels/testing.json");
+//	private static Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+	
 	private int cameraX;
 	private int marioStartingX;
 	 
-	private Level level = new LevelLoader().load("src/levels/testing.json");
-//	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+
 	private MainMenu mm = new MainMenu();
+	private LevelSelect ls = new LevelSelect();
 	 
 	
 	public static int width = 800;// 25 tiles
@@ -51,8 +53,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		if (currentScreen == SCREEN.MENU) {
 			mm.paint(g);
 		}else if (currentScreen == SCREEN.LEVEL_SELECT) {
-			System.out.println("Show level select");
-		}else if (currentScreen == SCREEN.LEVEL_SELECT) {
+			ls.paint(g);
+		}else if (currentScreen == SCREEN.GAME) {
 			level.paint(g);
 		}
 		// g.setColor(Color.black);//tile size is 32x32
