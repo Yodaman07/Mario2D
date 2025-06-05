@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -24,12 +26,14 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 	private JFrame f;
 	private JPanel panel;
+	
+	private int cameraX = 0; 
 
 	public Editor() {
 
 		this.configOptions();
 		this.promptCreation();
-
+		
 		System.out.println("Initialized");
 	}
 
@@ -41,11 +45,13 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		entityOptions.put("Mario", 0);
 		entityOptions.put("Goomba", 1);
 		entityOptions.put("Yoshi", 3);
+		entityOptions.put("Flag", 4);
 
 		entityAttributes.add(0, new HashMap<>(Map.of("jump", 0))); // mario
 		entityAttributes.add(1, new HashMap<>(Map.of("velocity", 0, "walk_distance", 0))); // goomba
 		entityAttributes.add(2, new HashMap<String, Integer>()); //MARIO YOSHI (but he isn't used)
 		entityAttributes.add(3, new HashMap<>(Map.of("velocity", 0, "walk_distance", 0))); // yoshi
+		entityAttributes.add(4, new HashMap<String, Integer>()); // Flag
 		
 	}
 
@@ -65,15 +71,25 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		// OPTIONS BAR
 		JPanel optionPanel = new JPanel();
 		optionPanel.setBackground(Color.pink);
-		optionPanel.setSize(100, 75);
+		optionPanel.setSize(100, 100);
 		optionPanel.setLocation(700, 500);
 
 		JButton save = new JButton("Save");
 		JButton delete = new JButton("Delete");
+		JButton close = new JButton("Close");
 		save.addActionListener(this);
 		delete.addActionListener(this);
+		close.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				f.dispose();
+			}
+		});
+		
 		optionPanel.add(save);
 		optionPanel.add(delete);
+		optionPanel.add(close);
 
 		// Entity Panel
 		JPanel entityPanel = new JPanel();
@@ -102,6 +118,9 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		f.add(this);
 		f.addMouseListener(this);
 		f.setVisible(true);
+		
+		
+//		f.setFocusable(true); //https://forums.oracle.com/ords/apexds/post/mouselistener-working-but-not-keylistener-5214
 	}
 
 	public void promptCreation() {
@@ -120,7 +139,6 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				initFrame(name.getText());
 				popUp.dispose();
 			}
@@ -161,23 +179,27 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				f.repaint();
 				repaint();
-				Object[] keyArray = entityAttributes.get(id).keySet().toArray();
-
-				for (int i = 0; i < keyArray.length; i++) {
-					try {
-						int value = Integer.valueOf(inputReferences.get(i).getText());
-						entityAttributes.get(id).put(keyArray[i].toString(), value);
-						System.out.println(entityAttributes);
-						System.out.println("Information added");
-						popUp.dispose();
-					} catch (NumberFormatException exception) {
-						System.out.println("NOT A VALID VALUE");
+				if (!inputReferences.isEmpty()) {
+					Object[] keyArray = entityAttributes.get(id).keySet().toArray();
+	
+					for (int i = 0; i < keyArray.length; i++) {
+						try {
+							int value = Integer.valueOf(inputReferences.get(i).getText());
+							entityAttributes.get(id).put(keyArray[i].toString(), value);
+							System.out.println(entityAttributes);
+							System.out.println("Information added");
+							popUp.dispose();
+						} catch (NumberFormatException exception) {
+							System.out.println("NOT A VALID VALUE");
+						}
 					}
+					// end of for loop
+				}else {
+					popUp.dispose();
 				}
-				// end of for loop
 
 				addEntity(x, y);
-
+				
 			}
 		});
 
@@ -191,6 +213,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		level.paint(g);
+		g.translate(cameraX, 0);
 
 		g.setColor(Color.black);
 		for (int i = 0; i <= Frame.width; i += 32) {
@@ -241,6 +264,8 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 			
 			ll.save("src/levels/" + level.getName() + ".json", level);
 		}
+		
+		
 	}
 
 	@Override
@@ -286,17 +311,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		repaint();
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	public boolean inBounds(int x, int y) {
-		return (x >= 0 && x < 25) && (y >= 0 && y < 15);
-	}
+	public boolean inBounds(int x, int y) {return (x >= 0 && x < 25) && (y >= 0 && y < 15);}
 
 	public void addBlock(int x, int y) {
 		HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
@@ -353,8 +368,16 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		}
 		
 	}
-}
 
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	
+};
+	
 enum MODE {
 	ADD,
 	MODIFY,

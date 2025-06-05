@@ -17,21 +17,24 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener {
 
-	public static boolean debugging = false;
+	public static boolean debugging = true;
+	public static SCREEN currentScreen = SCREEN.MENU;
 
-	// private Goomba goomba = new Goomba(100, height/2, 2, 100);
-	// private Mario mario = new Mario(500, height/2, 100);
-
-	 private int cameraX;
-	 private int marioStartingX;
+	private int cameraX;
+	private int marioStartingX;
 	 
-//	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
-	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
-
-
+	private Level level = new LevelLoader().load("src/levels/testing.json");
+//	private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
+	private MainMenu mm = new MainMenu();
+	 
+	
 	public static int width = 800;// 25 tiles
 	public static int height = 512; // 16 tiles
+	
+	
 
+	
+	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
@@ -40,13 +43,18 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		}else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
 			cameraX = -350+ level.mYoshi.getX();
 		}
-	
-		
 		
 		
 		g.translate(-cameraX, 0);
 		
-		level.paint(g);
+		
+		if (currentScreen == SCREEN.MENU) {
+			mm.paint(g);
+		}else if (currentScreen == SCREEN.LEVEL_SELECT) {
+			System.out.println("Show level select");
+		}else if (currentScreen == SCREEN.LEVEL_SELECT) {
+			level.paint(g);
+		}
 		// g.setColor(Color.black);//tile size is 32x32
 		
 		if (level.mario != null) {
@@ -194,6 +202,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		f.add(this);
 		f.setResizable(true);
 		f.addKeyListener(this);
+		f.addMouseListener(mm.getListener());
 
 		Timer t = new Timer(16, this);
 		t.start();
@@ -282,4 +291,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		repaint();
 	}
 
+}
+
+
+enum SCREEN{
+	GAME,
+	MENU,
+	LEVEL_SELECT
 }
