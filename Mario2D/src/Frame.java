@@ -24,6 +24,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 	 private int cameraX;
 	 private int marioStartingX;
+	 private boolean gameOver = false;
+	 private boolean mainMenu = false;
 	 
 //	 private Level level = new LevelLoader().load("src/levels/YoshiTest.json");
 	 private Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
@@ -35,20 +37,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
+		//sets camera view on mario
 		if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
 			cameraX = -350+ level.mario.getX();
 		}else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
 			cameraX = -350+ level.mYoshi.getX();
 		}
 	
-		
-		
-		
 		g.translate(-cameraX, 0);
 		
-		level.paint(g);
+		//paints level or the main menu
+		if(mainMenu) {
+			//mainMenu.paint(g);
+			mainMenu = false;
+		}else {
+			level.paint(g);
+		}
+		
 		// g.setColor(Color.black);//tile size is 32x32
 		
+		//sets bottom collision to false
 		if (level.mario != null) {
 			level.mario.setBottomCollison(false);
 		}
@@ -62,8 +70,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		//End game, winner
 		if(level.mario.getHitbox().intersects(level.flag.getHitbox())) {
 			System.out.println("Winner");
+			gameOver = true;
 		}
 		
+		//top collision with blocks
 		for(int i = 0; i < level.getBlocks().size(); i++) {
 			if(level.mario.getTopHitbox().intersects(level.getBlocks().get(i).getBottomHitbox()) && level.mario.isJumping() && level.getBlocks().get(i).getPath().equals("/imgs/Orange_Brick.png")) {
 				level.getBlocks().remove(i);
@@ -78,6 +88,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		
+		//collision with blocks
 		level.getBlocks().forEach((block) -> { // Collision
 
 			if (level.mario.getBottomHitbox().intersects(block.getHitbox())) {
@@ -119,6 +130,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 		});
 		
+		//jumping on enemies
 		for (int i = 0; i < level.getEnemies().size(); i++) {
 			if (level.mario.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox()) && level.mario.isFalling()) {
 				level.getEnemies().remove(i);
@@ -128,35 +140,49 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				break;
 			}
 			
-			//End game, lost
+			//End game, lost because hit enemies
 			if(level.mario.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mario.setX(level.mario.getX() - 15);
 				System.out.println("Damage");
+				gameOver = true;
 			}
 			
 			if(level.mario.getLeftHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mario.setX(level.mario.getX() + 15);
 				System.out.println("Damage");
+				gameOver = true;
 			}
 			
 			if(level.mYoshi.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mYoshi.setX(level.mYoshi.getX() - 15);
 				System.out.println("Damage");
+				gameOver = true;
 			}
 			
 			if(level.mYoshi.getLeftHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mYoshi.setX(level.mYoshi.getX() + 15);
 				System.out.println("Damage");
+				gameOver = true;
 			}
 			
 		}
 		
+		//jumping on the enemies as mario riding Yoshi
+		for (int i = 0; i < level.getEnemies().size(); i++) {
+			if (level.mYoshi.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox()) && level.mYoshi.isFalling()) {
+				level.getEnemies().remove(i);
+				i--;
+				level.mYoshi.setFalling(false);
+				level.mYoshi.jump();
+			}
+		}
 		
-		
+		//makes mario ride Yoshi
 		if (level.mario.getBottomHitbox().intersects(level.yoshi.getTopHitbox()) && level.mario.isFalling()) {
 			level.makeMarYoshi();
 		}
-
+		
+		//makes mario fall when he isn't standing on a block
 		if (!level.mario.isBottomCollison()) {
 			if (!level.mario.isJumping()) {
 				level.mario.setFalling(true);
@@ -168,16 +194,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				level.mYoshi.setFalling(true);
 			}
 		}
-
-		for (int i = 0; i < level.getEnemies().size(); i++) {
-			if (level.mYoshi.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox())
-					&& level.mYoshi.isFalling()) {
-				level.getEnemies().remove(i);
-				i--;
-				level.mYoshi.setFalling(false);
-				level.mYoshi.jump();
-			}
-		}
+		
+		
+		
 
 	}
 
@@ -213,7 +232,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-//		System.out.println(e.getKeyCode());
+		System.out.println(e.getKeyCode());
 		Mario m = level.mario;
 		MarioYoshi y = level.mYoshi;
 		switch (e.getKeyCode()) {
@@ -247,8 +266,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 					level.remakeMario();
 				}
 				break;
-			case (16): // shift
-				System.out.println("crouch");
+			case (82): // back to main menu
+				System.out.println("Return to Main Menu");
+				if(gameOver) {
+					mainMenu = true;
+				}
 				break;
 		}
 	}
