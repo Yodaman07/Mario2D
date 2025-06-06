@@ -1,5 +1,9 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,9 +24,20 @@ public class Level {
 	public transient MarioYoshi mYoshi;
 	public transient Yoshi yoshi;
 	public transient Flag flag;
+	
+	private transient AffineTransform tx;
+	private transient Image bg = getImage("/imgs/Background1.png");
+
 	// transient means it won't be serialized
 
+	@Override
+	public String toString() {
+		return "Level [type=" + type + ", name=" + name + ", id=" + id + ", blockLayout=" + blockLayout
+				+ ", entityLayout=" + entityLayout + "]";
+	}
+
 	public Level() {
+		
 	}
 	// Load level with LevelLoader
 
@@ -33,10 +48,15 @@ public class Level {
 
 		blockLayout = new ArrayList<HashMap<String, Integer>>();
 		entityLayout = new ArrayList<HashMap<String, Integer>>();
+		
+		tx = AffineTransform.getTranslateInstance(0, 0);
+		init(0, 0); 				//initialize the location of the image
 	}// When building the level via editor
 
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.drawImage(bg, tx, null);
 
 		for (StaticTexture b : blocks) {
 			b.paint(g2);
@@ -57,6 +77,7 @@ public class Level {
 		if(flag != null) {
 			flag.paint(g2);
 		}
+		
 	}
 
 	public void loadBlocks() {
@@ -165,16 +186,25 @@ public class Level {
 
 	}
 
-	public String getName() {
-		return this.name;
+	public String getName() {return this.name;}
+
+	private void init(double a, double b) {
+		tx.setToTranslation(a, b);
 	}
 
-	@Override
-	public String toString() {
-		return "Level [type=" + type + ", name=" + name + ", id=" + id + ", blockLayout=" + blockLayout
-				+ ", entities=" + entityLayout + "]";
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Level.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
 	}
 
+	
+	
 	public static int cTp(int coord, int scaler) { // map coordinates to pixel values --> this game will use a "scaler"
 													// of 32 pixels
 		// CoordToPixel
@@ -186,4 +216,5 @@ public class Level {
 	public static int pTc(int pixel, int scaler) { // maps pixel values to coordinate values
 		return (pixel / scaler);
 	}
+
 }

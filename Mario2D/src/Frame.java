@@ -22,8 +22,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	public static SCREEN currentScreen = SCREEN.MENU;
 	public static Level level = new LevelLoader().load("src/levels/testing.json");
 	public static boolean gameOver = false;
-	// private static Level level = new
-	// LevelLoader().load("Mario2D/src/levels/testing.json");
+	// private static Level level = new LevelLoader().load("Mario2D/src/levels/testing.json");
 
 	private int cameraX;
 	private int marioStartingX;

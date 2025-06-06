@@ -28,25 +28,25 @@ public class LevelSelect extends JPanel{
 	public static ArrayList<Point> levelRects;
 	public static ArrayList<String> levelPaths;;
 	
-	private Image levelsImages;
+	private Image levelsImages, bgImage;
 	private AffineTransform tx;
 	 
-	Font myFont = new Font("Courier", Font.BOLD, 10);
+	Font myFont = new Font("Courier", Font.BOLD, 14);
 	
 	
 	public LevelSelect() {
 		levelRects = new ArrayList<Point>();
 		levelPaths = getLevelPaths();
 
-		levelsImages = getImage("/imgs/EditorButton.png");
+		levelsImages = getImage("/imgs/BlankButton.png");
+		bgImage = getImage("/imgs/LevelScreen.png");
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(0, 0); 				//initialize the location of the image
 		
-		
 		int offset = 0;
 		for (String level: levelPaths) {
-			levelRects.add(new Point(10+offset, 350));	
+			levelRects.add(new Point(225+offset, 300));	
 			offset+=130;
 		}
 		
@@ -59,10 +59,14 @@ public class LevelSelect extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setFont(myFont);
 		
+		init(0,0);
+		g2.drawImage(bgImage, tx, null);
+		
 		for (int i = 0; i < levelPaths.size(); i++) {
 			init(levelRects.get(i).x, levelRects.get(i).y);
 			g2.drawImage(levelsImages, tx, null);
-			g2.drawString(levelPaths.get(i), levelRects.get(i).x, levelRects.get(i).y);
+			String name = levelPaths.get(i);//substring gets rid of the .json
+			g2.drawString(name.substring(0, name.length()-5), levelRects.get(i).x+10, levelRects.get(i).y+25+5);
 		}
 		
 	}
@@ -90,7 +94,7 @@ public class LevelSelect extends JPanel{
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
-			URL imageURL = StaticTexture.class.getResource(path);
+			URL imageURL = LevelSelect.class.getResource(path);
 			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
 		} catch (Exception e) {
 			e.printStackTrace();
