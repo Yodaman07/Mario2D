@@ -18,7 +18,7 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, KeyListener {
 
-	public static boolean debugging = true;
+	public static boolean debugging = false;
 	public static SCREEN currentScreen = SCREEN.MENU;
 	public static Level level = new LevelLoader().load("src/levels/testing.json");
 	public static boolean gameOver = false;
@@ -83,6 +83,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 
 		// End game, winner
 		if (level.mario.getHitbox().intersects(level.flag.getHitbox())) {
+			// System.out.println("Winner");
+			gameOver = true;
+			endScreen.setLose(false);
+		}
+		
+		if (level.mYoshi.getHitbox().intersects(level.flag.getHitbox())) {
 			// System.out.println("Winner");
 			gameOver = true;
 			endScreen.setLose(false);
