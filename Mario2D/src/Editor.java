@@ -94,14 +94,32 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		// Entity Panel
 		JPanel entityPanel = new JPanel();
 		entityPanel.setBackground(Color.GRAY);
-		entityPanel.setSize(96, 350);
-		entityPanel.setLocation(816, 40);
+		entityPanel.setSize(500, 50);
+		entityPanel.setLocation(100, 550);
 		entityOptions.forEach((String name, Integer id) -> {
 			JButton btn = new JButton(name);
 			btn.addActionListener(this);
 			entityPanel.add(btn);
 		});
+		
+		
+		//Left and right scrolling
+		JPanel right = new JPanel();
+		right.setSize(75, 50);
+		right.setLocation(610, 525);
+		JButton rightBtn = new JButton("Right");
+		rightBtn.addActionListener(this);
+		right.add(rightBtn);
+		
+		JPanel left = new JPanel();
+		left.setSize(75, 50);
+		left.setLocation(15, 525);
+		JButton leftBtn = new JButton("Left");
+		leftBtn.addActionListener(this);
+		left.add(leftBtn);
 
+		f.add(left);
+		f.add(right);
 		f.add(optionPanel);
 		f.add(panel);
 		f.add(entityPanel);
@@ -113,7 +131,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 
 		initPanel();
 
-		f.setSize(800 + 128, 512 + 128); // init code
+		f.setSize(800, 512 + 128); // init code
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.add(this);
 		f.addMouseListener(this);
@@ -212,16 +230,17 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		level.paint(g);
+		level.paint(g, cameraX);
+		
 		g.translate(cameraX, 0);
 
 		g.setColor(Color.black);
-		for (int i = 0; i <= Frame.width; i += 32) {
+		for (int i = -32; i <= Frame.width+(32*100); i += 32) {
 			g.drawLine(i, 0, i, Frame.height - 32);
 		}
 
 		for (int i = 0; i < Frame.height; i += 32) {
-			g.drawLine(0, i, Frame.width, i);
+			g.drawLine(-32, i, Frame.width + (32*100), i);
 		}
 	}
 
@@ -231,6 +250,10 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		f.repaint();
 		String event = e.getActionCommand();
 		System.out.println(event + " event");
+		
+		if (event.equals("Right")) {cameraX-=32;
+		}else if (event.equals("Left")) {cameraX+=32;}
+		
 
 		if (blockOptions.containsKey(event)) { // Figures out what type is selected
 			selectedType = TYPE.BLOCK;
@@ -266,16 +289,18 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		}
 		
 		
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) { // mouse press
 		Point p = MouseInfo.getPointerInfo().getLocation();
-		System.out.println(p);
-		System.out.println(e.getLocationOnScreen());
+//		System.out.println(p);
+//		System.out.println(e.getLocationOnScreen());
 
-		int x = Level.pTc(p.x, 32);
+		int x = Level.pTc(p.x, 32) + Level.pTc(-cameraX, 32);
 		int y = Level.pTc(p.y, 32) - 2;
+		
 		if (!inBounds(x, y)) {return;}
 
 		if (mode.equals(MODE.ADD)) {
@@ -311,7 +336,10 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 		repaint();
 	}
 
-	public boolean inBounds(int x, int y) {return (x >= 0 && x < 25) && (y >= 0 && y < 15);}
+	public boolean inBounds(int x, int y) {
+		return true;
+//		return (x >= 0 && x < 25) && (y >= 0 && y < 15);
+	}
 
 	public void addBlock(int x, int y) {
 		HashMap<String, Integer> blockInfo = new HashMap<String, Integer>();
@@ -327,7 +355,7 @@ public class Editor extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void addEntity(int x, int y) {
-		System.out.println(selectedId);
+		System.out.println(selectedId + "entity id");
 		HashMap<String, Integer> entityInfo = new HashMap<String, Integer>();
 		entityInfo.put("id", selectedId);
 		entityInfo.put("x", x);

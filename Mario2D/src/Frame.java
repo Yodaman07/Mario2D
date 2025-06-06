@@ -40,14 +40,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 
 		// sets camera view on mario
-		if (!gameOver) {
-			if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
-				cameraX = -350 + level.mario.getX();
-			} else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
-				cameraX = -350 + level.mYoshi.getX();
-			}
-		}
-
+//		if (!gameOver) {
+		
+//		}
+		g.translate(-cameraX, 0);
 
 		if (currentScreen == SCREEN.MENU) {
 			mm.paint(g);
@@ -59,10 +55,17 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				cameraX = 0;
 				endScreen.paint(g);
 			} else {
-				level.paint(g);
+				if (level.mario.getX() > 350 && !level.mYoshi.isPlaying()) {
+					cameraX = -350 + level.mario.getX();
+				} else if (level.mYoshi.getX() > 350 && level.mYoshi.isPlaying()) {
+					cameraX = -350 + level.mYoshi.getX();
+				}
+				
+				level.paint(g, 0);
 			}
 		}
-		g.translate(-cameraX, 0);
+		
+		
 
 
 		// g.setColor(Color.black);//tile size is 32x32
@@ -144,7 +147,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 			}
 
 		});
-
+		
+		
+		if (level.mario.getY() > 512 || (level.mYoshi.getY() > 512 && level.mYoshi.isPlaying())) {
+			gameOver = true;
+			endScreen.setLose(true);
+		}
+		
+		
 		// jumping on enemies
 		for (int i = 0; i < level.getEnemies().size(); i++) {
 			if (level.mario.getBottomHitbox().intersects(level.getEnemies().get(i).getTopHitbox())
@@ -170,7 +180,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				gameOver = true;
 				endScreen.setLose(true);
 			}
-
+			
 			if (level.mYoshi.getRightHitbox().intersects(level.getEnemies().get(i).getHitbox())) {
 				level.mYoshi.setX(level.mYoshi.getX() - 15);
 				System.out.println("Damage");
@@ -184,6 +194,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				gameOver = true;
 				endScreen.setLose(true);
 			}
+			
 
 		}
 

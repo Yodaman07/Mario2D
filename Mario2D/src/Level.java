@@ -53,9 +53,9 @@ public class Level {
 		init(0, 0); 				//initialize the location of the image
 	}// When building the level via editor
 
-	public void paint(Graphics g) {
+	public void paint(Graphics g, int c) {
 		Graphics2D g2 = (Graphics2D) g;
-		
+		g2.translate(c, 0);
 		g2.drawImage(bg, tx, null);
 
 		for (StaticTexture b : blocks) {
